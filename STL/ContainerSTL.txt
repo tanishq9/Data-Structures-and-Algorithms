@@ -1,0 +1,99 @@
+ ///Pair
+    pair<int,char> pairone;
+    pairone.first=3;
+    pairone.second='a';
+    cout<<pairone.first<<" "<<pairone.second<<endl;
+    pairone=make_pair(5,'a');
+    cout<<pairone.first<<" "<<pairone.second<<endl;
+
+    ///List- Sequence Container
+    ///Lists are sequence containers that allow non-contiguous memory allocation.
+    ///As compared to vector, list has slow traversal, but once a position has been found,
+    ///insertion and deletion are quick. Normally, when we say a List, we talk about doubly linked list.
+    ///For implementing a singly linked list, we use forward list.
+
+    list<int> mylist;
+    mylist.push_front(2);
+    mylist.push_front(4);
+    mylist.push_back(5); ///4 2 5
+    list<int> :: iterator iter;
+    for(iter=mylist.begin();iter!=mylist.end();iter++)
+        cout<<*iter<<" ";
+    cout<<endl;
+
+
+    ///STACK,QUEUE,PRIORITY QUEUE:-Container Adapters :  provide a different interface for sequential containers.
+    /// #1 STACK
+
+    ///Stacks are a type of container adapters with LIFO(Last In First Out) type of working,
+    ///where a new element is added at one end and (top) an element is removed from that end only.
+  ///  The functions associated with stack are:
+            ///empty() – Returns whether the stack is empty
+            ///size() – Returns the size of the stack
+            ///top() – Returns a reference to the top most element of the stack
+            ///push(g) – Adds the element ‘g’ at the top of the stack
+            ///pop() – Deletes the top most element of the stack
+
+    stack<int> mystack;
+    mystack.push(5);
+    mystack.push(10);
+     /// This is pointless here -> stack<int> :: iterator iter;
+    /// iter=mystack.begin(); ///No such method,so cant use iterators in stack
+    cout<<mystack.top()<<endl; ///10 is printed
+
+
+    ///#2 Queue : ueues are a type of container adaptors which operate in a first in first out (FIFO) type of arrangement
+    /// Elements are inserted at the back (end) and are deleted from the front
+    /// The functions supported by queue are :
+            ///empty() – Returns whether the queue is empty
+            ///size() – Returns the size of the queue
+            ///front() – Returns a reference to the first element of the queue
+            ///back() – Returns a reference to the last element of the queue
+            ///push(g) – Adds the element ‘g’ at the end of the queue
+            ///pop() – Deletes the first element of the queue
+    queue<char> myqueue;
+    myqueue.push('a');
+    myqueue.push('z');
+    cout<<myqueue.front()<<endl;///a is printed
+
+    ///#3 PriorityQueue
+    /// It is designed in such a way that the queue is internally sorted such that the highest element is always at the top
+    ///Unlike queue,it does not have front() and back() function i.e it does keep track of those elements,instead it just returns the top(highest) element of the queue
+
+    priority_queue<int> myprior;
+    myprior.push(10);
+    myprior.push(20);
+    myprior.push(15);
+    myprior.push(18);
+    cout<<myprior.top()<<endl;
+    ///20 18 15 10 (this is how the queue looks internally)
+
+    ///Associative Containers :  implement sorted data structures that can be quickly searched (O(log n) complexity).
+    set<int,greater<int> > myset;
+    set <int,greater<int> > :: iterator iter;
+    myset.insert(10);
+    myset.insert(40);
+    myset.insert(20);
+    myset.insert(30);
+    myset.insert(40);
+    myset.insert(50);
+
+    for(iter=myset.begin();iter!=myset.end();iter++)
+        cout<<*iter<<" ";
+    cout<<endl;
+    
+       map<string,int> mymap;
+    ///Insert
+    mymap["Mango"]=2;
+    ///Second Insert
+    mymap.insert(make_pair("Apple",3));
+    ///Search
+    if(mymap.count("Mango"))  ///count is 1 if found otherwise 0
+        cout<<mymap["Mango"]<<endl;
+    auto ptr=mymap.find("Mango");
+    if(ptr!=mymap.end()){
+            ///if such a key exists then the pointer wont point to end
+        cout<<ptr->first<<" "<<ptr->second<<endl;
+    }
+    return 0;
+}
