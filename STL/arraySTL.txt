@@ -1,0 +1,21 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int main(){
+	//From C++11 onwards, some new and interesting algorithms are added in STL of C++. These algorithms operate on an array and are useful in saving time during coding and hence useful in competitive programming as well.
+	int arr[6]={1,6,5,4,2,9};
+	///all_of() : This function operates on whole range of array elements and can save time to run a loop to check each elements one by one. It checks for a given property on every element and returns true when each element in range satisfies specified property, else returns false.
+	all_of(arr,arr+sizeof(arr)/sizeof(arr[0]),[](int x){return x>0;})?cout<<"all +ve"<<endl:cout<<"not all +ve"<<endl;
+	//any_of() : This function checks for a given range if there’s even one element satisfying a given property mentioned in function. Returns true if at least one element satisfies the property else returns false.
+    any_of(arr,arr+sizeof(arr)/sizeof(arr[0]),[](int x){return x>0;})?cout<<"all +ve"<<endl:cout<<"not all +ve"<<endl;
+    //none_of() : This function returns true if none of elements satisfies the given condition else returns false.
+    none_of(arr,arr+sizeof(arr)/sizeof(arr[0]),[](int x){return x>0;})?cout<<"all +ve"<<endl:cout<<"not all +ve"<<endl;
+    
+    //copy_n()
+    int arr2[14];
+    copy_n(arr,sizeof(arr)/sizeof(int),arr2);
+    for(int i=0;i<sizeof(arr2)/sizeof(int);i++)
+    	cout<<arr2[i]<<" ";
+    cout<<endl;
+	return 0;
+}
