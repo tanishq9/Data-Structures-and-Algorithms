@@ -1,0 +1,24 @@
+ACMCEG2B - FIGUREFUL
+
+#include <iostream>
+#include <map>
+using namespace std;
+///typedef pair<int,int> mypair;
+int main()
+{
+    int queries,one,two;
+    map<pair<int,int>,string> mymap;
+    pair<int,int> mypair;
+    string name;
+    int num;cin>>num;
+    while(num--){
+        cin>>mypair.first>>mypair.second>>name;
+        mymap[mypair]=name;///eg. ABC will have (1,2) as a key
+    }
+    cin>>queries;
+    while(queries--){
+        cin>>mypair.first>>mypair.second;
+        cout<<mymap[mypair]<<endl;
+    }
+    return 0;
+}
