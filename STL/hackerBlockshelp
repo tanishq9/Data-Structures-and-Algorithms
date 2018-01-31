@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int main() {
+//    1 3 7 19 -> c1,c2,c3,c4 resp.
+//    2 3 -> 2 time rickshaw and 3 time car
+//    2 5 -> number of times ramu is going to use rickshaw i ; i = 0,1 here
+//    4 4 4 -> number of times ramu is going to use rickshaw i ; i = 0,1,2 here
+// c1 - for one ride, c2 - unlimited number of times on some rickshaw or cab, c3 - unlimited number of times on all rickshaw or cab
+                                    // c4 - unlimited number of times on all rickshaw and cab
+
+   // (((2*1+3*1,3*2),7),9)
+   
+    int query,c1,c2,c3,c4,rick,car,amountrick=0,amountcar=0;
+    cin>>query;
+    while(query--){
+            cin>>c1>>c2>>c3>>c4>>rick>>car;
+            int rickride[rick];
+            int carride[car];
+            for(int i=0;i<rick;i++)cin>>rickride[i];
+            for(int i=0;i<car;i++)cin>>carride[i];
+            for(int i=0;i<rick;i++)amountrick+=min(rickride[i]*c1,c2);
+         //   cout<<amountrick<<endl;
+            amountrick=min(amountrick,c3);
+        //    cout<<amountrick<<endl;
+            for(int i=0;i<car;i++)amountcar+=min(carride[i]*c1,c2);
+            amountcar=min(amountcar,c3);
+        //    cout<<amountcar<<endl;
+            cout<<min((amountcar+amountrick),c4)<<endl;
+    }
+}
+

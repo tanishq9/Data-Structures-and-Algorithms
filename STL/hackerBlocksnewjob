@@ -1,0 +1,36 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+bool myCompare(pair<string,int> pairone,pair<string,int> pairtwo){
+    if(pairone.second>pairtwo.second)
+        return true;
+    else if(pairone.second == pairtwo.second){
+        if(pairone.first < pairtwo.first)
+            return true;
+    }
+    return false;
+}
+
+int main() {
+    int base,emp;cin>>base>>emp;
+    pair<string,int> arr[emp];
+    pair<string,int> mypair;
+    for(int index=0;index<emp;index++){
+        cin>>arr[index].first>>arr[index].second;//first entry will be name and second entry will be the salary
+    }
+  //  for(int index=0;index<emp;index++){
+//        cout<<arr[index].first<<" "<<arr[index].second<<endl;
+  //  }
+    sort(arr,arr+emp,myCompare);
+    for(int i=0;i<emp;i++){
+        
+        if(arr[i].second>=base)
+            cout<<arr[i].first<<" "<<arr[i].second;
+        cout<<endl;
+    }
+    
+}
+
