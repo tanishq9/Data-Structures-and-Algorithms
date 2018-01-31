@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+bool isMatched(int amount,int *notes,int i){
+    int index=0,sum=0;
+    while(i>0){
+        if(i&1)//implies if that bit is a set bit or not
+            sum+=notes[index];
+        index++;
+        i=i>>1;
+    }
+    cout<<sum<<" ";
+    if(sum==amount)
+        return true;
+    return false;
+}
+
+int main() {
+    int range,query,totalnotes,amount;cin>>query;
+    while(query--){
+        cin>>totalnotes>>amount;
+        bool flag=false;
+        int notes[totalnotes];
+        for(int i=0;i<totalnotes;i++){
+            cin>>notes[i];
+        }
+ range=(1<<totalnotes)-1;//example : if totalnotes = 3 and amount is 10 and notes are 8,2,4 then we will check for all 8,2,4,8 2,8 4,2 4,8 2 4 
+        for(int i=1;i<=range;i++){ 
+            if(isMatched(amount,notes,i)){
+                flag=true;
+                break;
+            }
+        }
+        if(flag==true)
+            cout<<"YES"<<endl;
+        else
+            cout<<"N0"<<endl;
+    }
+}
+

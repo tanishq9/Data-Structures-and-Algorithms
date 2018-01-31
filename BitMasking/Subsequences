@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstring> //for strlen
+using namespace std;
+
+void filterchars(char *arr,int i){
+    int index=0;
+    while(i>0){
+        (i&1)?cout<<arr[index]:cout<<"";//accessing array from right to left but printing array from left to right
+        i=i>>1;
+        index++;
+    }
+    cout<<endl;
+}
+
+int main() {
+    char arr[100];//100 is arr size not its length
+    cin>>arr;
+    int n=strlen(arr);
+    int range=(1<<n)-1;//2^(n-1) - 1
+    for(int i=0;i<=range;i++){
+        cout<<i<<" ";
+        filterchars(arr,i);
+    }
+}
+
+
+OUTPUT : 
+0 
+1 a
+2 b
+3 ab
+4 c
+5 ac
+6 bc
+7 abc
+

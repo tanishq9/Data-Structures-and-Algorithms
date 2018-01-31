@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+//Unique Numbers #1
+/*    int unique_num=0;
+    int arr[]={1,5,4,3,4,3,6,1,5};
+    int length=sizeof(arr)/sizeof(arr[0]);
+    // num ^ 0 = num 
+    for(int i=0;i<length;i++){
+        unique_num=unique_num^arr[i];
+    }
+    cout<<unique_num<<endl;
+*/
+
+//Unique Numbers #2
+    int arr[]={1,2,3,7,5,3,2,1};
+    int length=sizeof(arr)/sizeof(arr[0]);
+    int first_set_bit=0,res=0; //XOR all
+    for(int i=0;i<length;i++){
+        res=res^arr[i];
+    }
+ //   cout<<res<<endl;
+    //Now find the rightmost set bit in 1
+    int temp=res,count=0;
+    while(temp!=0){
+        if(temp&1){
+            break;
+        }
+        count++;
+        temp=temp>>1;
+    }
+//    cout<<count<<" ";
+    int first=0,second=0;
+    int mask=1<<count;
+    for(int i=0;i<length;i++){
+        if(arr[i]&mask){
+            first=first^arr[i];
+        }
+    }
+    second=first^res;
+    cout<<first<<" "<<second<<endl;
+    
+// Unique Numbers #3    
+    
+    
+
+}
+

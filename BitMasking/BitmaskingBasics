@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+
+//Approach 1 to find number of set bits , works in O(NO OF BITS)
+int setbits(int num){
+    int set_bits=0;
+    while(num>0){
+        set_bits+=num&1;
+        num=num>>1;
+    }
+    return set_bits;
+}
+
+//Approach 2 to find number of set bits , works in O(NO OF SET BITS)
+int setbitsallter(int num){
+    int set_bits=0;
+    while(num>0){
+        num=num&(num-1);
+        set_bits++;
+    }
+    return set_bits;
+}
+
+int getithbit(int num,int ith){
+    return num&(1<<ith)!=0?1:0;
+}
+
+int setithbit(int num,int ith){
+    num=num|(1<<ith);
+    return num;
+}
+
+int clearithbit(int num,int ith){
+    num=num ^ (1<<ith);
+    return num;
+}
+
+int main() {
+    //BITMASKING
+    int num=4;
+    //Negative of a number = its complement + 1 
+    cout<<(~num + 1)<<endl;
+    //Even or Odd
+    if(num&1)// & is 1 if both a and b are 1.
+        cout<<"Odd"<<endl;
+    else
+        cout<<"Even"<<endl;
+    //Minimum bits to be changed to covert a into eg 11 to 15 ,only 1 bit need to be changed
+    //Logic -> Do XOR of each and every digit in both the numbers
+    //Below the set-bits logic 
+    
+
+    //Number of set-bits -> Number of 1s in a number
+    cout<<setbits(11)<<endl;
+
+    int num1=11,num2=15;
+    cout<<setbits(15)-setbits(11)<<endl;//Works in O(No of bits)
+    cout<<setbitsallter(13)<<endl;//Works in O(No of Setbits)
+    
+    //XOR swapping
+    int a=5,b=7;
+    cout<<"Before swapping : "<<a<<" "<<b<<endl;
+    a=a^b;b=a^b;a=b^a;
+    cout<<"After swapping : "<<a<<" "<<b<<endl;
+    
+    int num3=13;
+    //Some Basic Functions
+    cout<<getithbit(11,2)<<endl;
+    cout<<setithbit(num3,1)<<endl;
+    cout<<clearithbit(num3,2)<<endl;
+}
+
+
