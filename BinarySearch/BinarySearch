@@ -1,0 +1,72 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+bool binarySearch(int *arr,int low,int high,int element){
+    while(low<=high){
+        int mid=(low+high)/2;
+        if(element==arr[mid]){
+            return true;
+        }
+        else if(element>arr[mid]){
+            low=mid+1;
+        }else if(element<arr[mid]){
+            high=mid-1;
+        }
+    }
+    return false;
+}
+
+int main(){
+
+	int a[]={4,6,1,2,3,0};
+	int n=6;
+    sort(a,a+n);
+    for(int i=0;i<n;i++){
+        cout<<a[i]<<" ";
+    }
+	if(binarySearch(a,0,n-1,6)){
+	    cout<<"Found"<<endl;
+	}else{
+	   cout<<"NOT Found"<<endl;
+	}
+
+}
+//Square Root Using Binary Search
+#include <iostream>
+using namespace std;
+
+float squareRoot(int n){
+    int low=0,high=n,mid;
+    float ans=0;
+    while(low<=high){
+        mid=(low+high)/2;
+        if((mid*mid)==n){
+            ans = mid;
+        }
+        else if((mid*mid) < n){
+            low = mid + 1;
+            ans = mid;
+        }
+        else{
+            high = mid -1;
+        }
+    }
+    int p=2;
+    float inc=0.1;
+    for(int i=0;i<p;i++){
+        while((ans*ans) < n){
+            ans=ans+inc;
+            cout<<ans<<" ";
+        }
+        ans-=inc;
+        inc/=10;
+    }
+    return ans;
+}
+
+int main() {
+    cout<<squareRoot(48);
+    return 0;
+}
+
