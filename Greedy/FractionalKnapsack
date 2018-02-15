@@ -1,0 +1,38 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+bool myCompare(pair<int,int> pairone,pair<int,int> pairtwo){
+    if(pairtwo.second/pairtwo.first < pairone.second/pairone.first){
+        return true;
+    }
+    return false;
+}
+int main() {
+    int capacity;cin>>capacity;
+    int bags=0;cin>>bags;
+    pair<int,int> arr[bags];
+    for(int i=0;i<bags;i++)
+        cin>>arr[i].first>>arr[i].second;
+    sort(arr,arr+bags,myCompare);    
+    for(int i=0;i<bags;i++)
+        cout<<arr[i].first<<" "<<arr[i].second<<endl;
+    int current_capacity=0;
+    float amount=0.0;
+    for(int i=0;i<bags;i++){
+        cout<<current_capacity<<endl;
+        //ADD IT COMPLETELY , IF THE BAG DOESNT OVERFLOW
+        if(current_capacity+arr[i].first<=capacity){
+            current_capacity+=arr[i].first;
+            amount+=arr[i].second;
+        }
+        //ADD FRACTIONAL PART , IF IT OVERFLOWS
+        else{
+            int remain=capacity-current_capacity;
+            amount+=(float)(remain/arr[i].first)*(arr[i].second);
+        }
+    }
+    cout<<amount<<endl;
+    return 0;    
+}
+

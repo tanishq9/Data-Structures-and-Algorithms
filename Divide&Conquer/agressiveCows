@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+typedef long long int ll;
+
+//HERE THE SEARCH SPACE IS THE DISTANCE BETWEEN THE COWS WHICH NEEDS TO BE MINIMISED 
+bool validConfig(ll *arr,ll cows,ll stalls,ll mid){
+
+    int num_cows=1,current_distance=0,pos=arr[0];//we put first cow at arr[0]
+    for(int i=1;i<stalls;i++){
+        if((arr[i]-pos)>=mid){
+            num_cows++;
+            if(num_cows==cows){
+               // cout<<"Valid"<<endl; 
+               return true;
+            }
+            pos=arr[i];//updating the position for previous cow
+        }
+    }
+  //  cout<<"Invalid"<<endl;
+    return false;
+}
+
+
+//we have to minimise the maximum distance between 'n' cows
+ll minDistance(ll stalls,ll cows,ll *arr){
+    ll low=arr[0],high=arr[stalls-1];
+    ll finalAns=0;
+    while(low<high){
+        ll mid=(low+high)/2;
+        cout<<mid<<" "<<low<<" "<<high<<" ";
+        if(validConfig(arr,cows,stalls,mid)){
+            //increase
+            cout<<"valid"<<endl<<endl;
+            low=mid+1;
+            finalAns=mid;
+        }else{
+            cout<<"Invalid"<<endl<<endl;
+            high=mid-1;
+        }
+    }
+    return finalAns;
+}
+
+int main() {
+    ll testcases,stalls,cows;
+    cin>>testcases>>stalls>>cows;
+    ll arr[stalls];
+    while(testcases--){
+        for(int i=0;i<stalls;i++){
+            cin>>arr[i];
+        }
+        cout<<minDistance(stalls,cows,arr);
+    }
+    return 0;
+}
+

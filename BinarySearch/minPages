@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+typedef long long int ll;
+
+bool isValidConfig(ll *books,ll n, ll k,ll mid){
+    ll students=1,currentPages=0;
+    for(int i=0;i<n;i++){
+        if((currentPages+books[i])>mid){
+            //cannot read more pages
+            students++;
+            currentPages=books[i];
+            if(students>k){
+                return false;
+            }
+        }else{
+            currentPages+=books[i];
+        }
+    }
+    return true;
+}
+
+int readMin(ll *books,ll n ,ll k){//n is no of books and k is students
+    ll total_pages=0,s=0,e=0;
+    for(ll i=0;i<n;i++){
+        total_pages+=books[i];
+        s=max(s,books[i]);
+    }
+    ll finalAns=0;
+    e=total_pages;
+    while(s<=e){
+        int mid=(s+e)/2;
+        if(isValidConfig(books,n,k,mid)){
+            e=mid-1;
+            finalAns=mid;//if it is valid then only we fix finalAns as mid
+            //True
+        }else{
+            s=mid+1;
+            //False            
+        }   
+    }
+    return finalAns;
+}
+
+int main() {
+    ll n,k;cin>>n>>k;
+    ll books[100];
+    for(int i=0;i<n;i++){
+        cin>>books[i];
+    }
+    cout<<readMin(books,n,k);
+}
+
+//InvalidConfig implies we cannot assign more pages else we can assign more pages if valid config
+

@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+typedef long long int ll;
+bool cmp(int a,int b){
+    return a<b;
+}
+int main() {
+    ll n,criteria,count=0;cin>>n>>criteria;int arr[n];
+    for(ll i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    sort(arr,arr+n,cmp);
+    for(ll i=0;i<n-1;){
+        if(abs(arr[i]-arr[i+1]) <= criteria){
+            count++;
+            if(i<n-2)
+                i+=2;
+            else if(i=n-2){
+                break;   
+            }
+        }else{
+            i+=1;
+        }
+    }
+    cout<<count;
+    return 0;
+}
+

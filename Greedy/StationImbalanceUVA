@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+bool cmp(int num1,int num2){
+    return num1<num2;
+}
+int main() {
+    float boxes,items;cin>>boxes>>items;
+    int number_of_zeroes=2*boxes-items;
+    int size_of_array=number_of_zeroes+items;
+    int item_array[size_of_array]{0};
+    float sum=0.0,avg=0.0;
+    for(int i=0;i<size_of_array;i++){
+        cin>>item_array[i];
+        sum+=item_array[i];
+    }
+    sort(item_array,item_array+size_of_array,cmp);
+    avg=sum/boxes;
+    cout<<size_of_array<<" "<<sum<<" "<<avg<<endl;
+    for(int i=0;i<size_of_array;i++){
+        cout<<item_array[i]<<" ";
+    }
+    cout<<endl;
+    float diff=0.0;
+    for(int i=0,j=size_of_array-1;i<size_of_array/2 && j>=size_of_array/2;i++,j--){
+        cout<<item_array[i]+item_array[j]-avg<<endl;
+        diff+=abs(item_array[i]+item_array[j]-avg);
+    }
+    cout<<endl<<"Imbalance is : "<<diff<<endl;
+}
+

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+bool cmp(pair<int,int> one,pair<int,int> two){
+    if(one.first-one.second < two.first-two.second ){
+        return true;
+    }else if(one.first-one.second == two.first-two.second){
+        if(one.first<two.first){
+            return true;
+        }
+    }
+    return false;
+}
+int main() {
+    int t;
+    cin>>t;
+    pair<int,int> myPair[t];
+    int arr[t];
+    for(int i=0;i<t;i++){
+        cin>>myPair[i].first>>myPair[i].second;
+    }
+    sort(myPair,myPair+t,cmp);
+    for(int i=0;i<t;i++){
+        cout<<myPair[i].first<<" "<<myPair[i].second<<endl;
+    }
+    int count=1;pair<int,int> current_pair=myPair[0];
+    //Logic Function
+    for(int i=1;i<t-1;i++){
+        if((current_pair.first+current_pair.second)<=(myPair[i+1].first-myPair[i+1].second)){
+            count++;
+            current_pair=myPair[i+1];
+        }
+    }
+    cout<<count;
+    return 0;
+}
+
