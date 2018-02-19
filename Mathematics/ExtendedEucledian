@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+int gcd(int dvd,int dvr){
+/*    if(dvr==0){
+        return dvd;
+    }
+    return gcd(dvr,dvd%dvr);
+*/    
+    return dvr==0?dvd:gcd(dvr,dvd%dvr);
+}
+
+int lcm(int a,int b){
+    return a*b/gcd(a,b);
+}
+
+int x,y,GCD;
+void extendedEuclid(int a,int b){
+    if(b==0){
+        x=1;
+        y=0;
+   //     GCD=a;
+        return;
+    }
+    extendedEuclid(b,a%b);
+    //Work done after recursion
+    int cX=y;
+    int cY=x-(a/b)*y;
+    x=cX;
+    y=cY;
+}
+//assume inverse exists
+int inverseModulo(int a,int m){
+    if(gcd(a,m)==1)
+    {
+        extendedEuclid(a,m);
+        return (x+m)%m;
+    }
+    return 0;
+}
+
+int main() {
+    cout<<gcd(10,15)<<endl;//greatest common divisor
+    cout<<lcm(10,15)<<endl;//least common multiple
+    //extendedEuclid(30,18);
+    //cout<<x<<" "<<y<<endl;
+    cout<<inverseModulo(8,7)<<endl;
+    return 0;
+}
+
