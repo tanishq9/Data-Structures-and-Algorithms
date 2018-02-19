@@ -1,0 +1,121 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+typedef long long int ll;
+#define MOD 1000000000
+ll k;
+vector<ll> a,b,c;
+
+vector<vector<ll> > multiply(vector<vector<ll> > A,vector<vector<ll> > B){
+    //the third matrix will store the result here
+    vector<vector<ll> > C(k+1,vector<ll>(k+1));
+    for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            for(int x=1;x<=k;x++){
+                C[i][j]=(C[i][j]+(A[i][x]*B[x][j])%MOD)%MOD;
+            }
+        }
+    }
+    
+    /*for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            cout<<C[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl<<endl;*/
+    return C;
+}
+
+vector<vector<ll> > pow(vector<vector<ll> > matrix,ll p){
+    if(p==1){
+        return matrix;
+    }
+    if(p&1){
+        return multiply(matrix,pow(matrix,p-1));
+    }else{
+        vector<vector<ll> > smallAns=pow(matrix,p/2);
+        return multiply(smallAns,smallAns);
+    }
+}
+
+ll compute(ll n){
+    //base case
+    if(n==0){
+        return 0;
+    }
+    //suppose n<=k
+    if(n<=k){
+        return b[n-1];
+    }
+    //otherwise use matrix exponentiation ,indexing from 1
+    vector<ll> F1(k+1);
+    for(ll i=1;i<=k;i++){
+        F1[i]=b[i-1];
+    }
+    //Now,find the transformation matrix
+    vector<vector<ll> > T(k+1,vector<ll>(k+1)); //we are creating a 2D matrix havinf k+1 rows and each row containing a vector<ll>(k+1)
+                        //size of row,size of column
+    //Let init T
+    for(ll i=1;i<=k;i++){
+        for(ll j=1;j<=k;j++){
+            if(i<k){
+                
+                if(j==i+1){
+                    T[i][j]=1;
+                }else{
+                    T[i][j]=0;
+                }    
+                continue;       
+            }
+            else if(i==k){//for the last row->store coeffs in reverse order
+                
+                T[i][j]=c[k-j];
+                        
+            }
+        }
+    }
+    
+  /*  for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            cout<<T[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl<<endl;
+  */  
+    //T^n-1
+    T=pow(T,n-1);
+    //Multplify with F1
+    ll res=0;
+    for(ll i=1;i<=k;i++){
+        res=(res+(T[1][i] * F1[i])%MOD)%MOD;
+    }
+    return res;
+}
+
+int main() {
+    ll t,n,num;
+    cin>>t;
+    while(t--){
+        cin>>k;//k is the number of terms that are needed to find one recurrence term ,example: In Fibo,the number of terms are 2 ,i.e f(n-1)+f(n-2)
+        
+        //Init vector F1
+        for(int i=0;i<k;i++){
+            cin>>num;
+            b.push_back(num);//pushing back in F1 vector i.e the k*1 vector
+        }
+        //Coeffs (which is used to form 3rd row of transformation matrix)
+        for(int i=0;i<k;i++){
+            cin>>num;
+            c.push_back(num);
+        }
+        //the value of n(the term which we have to find)
+        cin>>n;
+        cout<<compute(n)<<endl;
+        b.clear();
+        c.clear();
+    }
+    return 0;
+}
+
