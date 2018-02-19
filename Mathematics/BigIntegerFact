@@ -1,0 +1,41 @@
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc=new Scanner(System.in);
+        String s1=sc.next();
+        String s2=sc.next();
+        //the second parameter denotes the base 
+        BigInteger one=new BigInteger(s1);
+        BigInteger two=new BigInteger(s2);
+        System.out.println(one+" "+two);
+        System.out.println(one.multiply(two));
+    
+        //Factorial of a number 
+        
+        System.out.println(fact(100));
+        int n=100,res=1;
+        
+        //the BigInteger class can contain 100's of digits
+        
+        
+        //this wont work
+        for(int i=1;i<=n;i++){
+            res=res*i;
+        }
+        System.out.println(res);
+    }
+    
+    static BigInteger fact(int n){
+        
+        BigInteger one=new BigInteger("1");
+        for(int i=1;i<=n;i++){
+            one=one.multiply(BigInteger.valueOf(i));
+        }
+        return one;
+    }
+    //.valueOf is used when you want to parse something into BigInteger
+    //example: if we do Integer.valueOf("451"); will give 451
+    
+}

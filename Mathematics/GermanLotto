@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+
+
+int main() {
+    int k;int arr[k];
+    cin>>k;//
+    for(int i=0;i<k;i++){
+        cin>>arr[i];
+    }
+    cout<<endl;
+    //we know k>6 and we have to generate all the possible combinations from given set (k>6)
+    //we will first sort the array,then using brute force we will generate the combinations
+    int count=0;
+    for(int i=0;i<k-5;i++){
+        for(int j=i+1;j<k-4;j++){
+            for(int l=j+1;l<k-3;l++){
+                for(int m=l+1;m<k-2;m++){
+                    for(int n=m+1;n<k-1;n++){
+                        for(int o=n+1;o<k;o++){
+
+                            cout<<arr[o]<<"   "<<arr[i]<<","<<arr[j]<<","<<arr[l]<<","<<arr[m]<<","<<arr[n]<<","<<arr[o]<<endl;
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+ //   cout<<arr[6];
+    cout<<count<<endl;
+    return 0;
+}
+

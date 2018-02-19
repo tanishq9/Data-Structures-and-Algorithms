@@ -1,0 +1,17 @@
+import java.math.BigInteger;
+import java.util.Scanner;
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc=new Scanner(System.in);
+        String total,diff;int testcases=10;
+        while(testcases!=0){
+            total=sc.next();diff=sc.next();
+            BigInteger one=new BigInteger(total);
+            BigInteger two=new BigInteger(diff);
+            BigInteger kla=one.add(two);kla=kla.divide(BigInteger.valueOf(2));
+            BigInteger nat=one.subtract(kla);
+            testcases--;
+            System.out.println(kla+"\n"+nat);
+        }
+    }
+}
