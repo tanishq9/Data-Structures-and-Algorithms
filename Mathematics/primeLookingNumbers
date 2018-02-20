@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+int setBits(int n){
+    int count=0;
+    while(n!=0){
+        if(n&1)
+            count++;
+        n=n>>1;
+    }
+    return count;
+}
+//Ditto to subsequence using bitmasking problem
+int main() {
+    //we are finding numbers which are divisible by 2,3,5 and less than 999
+    int arr[]={2,3,5};
+    int k=3;
+    int n=999,ans=0;
+    int range=(1<<k)-1;
+    for(int i=1;i<=range;i++){
+        int mask=i;
+        int bits=setBits(mask);
+            int temp=1;
+            int pos=0;
+            while(mask>0){
+                if(mask&1){
+                    temp=temp*arr[pos];
+       //             cout<<temp<<" ";
+                }
+                mask=mask>>1;
+                pos++;
+            }
+            if(bits&1){
+                ans+=n/temp;
+            }
+            else{//even number of numbers from array
+                ans-=n/temp;
+            }
+         //   cout<<ans<<endl;
+    }
+    cout<<"there are "<<ans<<" numbers which has either 2,3 or 5 as their divisor"<<endl;
+    return 0;
+}
+

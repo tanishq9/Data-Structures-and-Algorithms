@@ -1,0 +1,113 @@
+#include <iostream>
+using namespace std;
+typedef long long int ll;
+int main() {
+    ll n,t;ll arr[n];
+    cin>>t;
+    while(t--){
+        cin>>n;
+        for(ll i=0;i<n;i++){
+            cin>>arr[i];
+        }
+        // 1 4 2 7 3 -> cf array will be like: 0 1 5 7 15 20 
+        ll cf[n+1];cf[0]=0;
+    /*    for(int i=1;i<n+1;i++){
+            cf[i]=arr[i-1]%n;
+        }
+    */  ll sum=0;
+        //cout<<"The cumulative sum array is:"<<endl;
+        for(ll i=0;i<n+1;i++){
+            sum+=(arr[i]+n)%n;
+            cf[i+1]=sum%n;
+            //cout<<cf[i]<<" ";
+        }
+     //   cout<<endl;
+        //now make a frequency array
+        ll freq[n]{0};
+        for(ll i=0;i<n+1;i++){
+            freq[cf[i]]++;
+        }
+       /* cout<<"The frequency array is:"<<endl;
+        for(int i=0;i<n;i++){
+            cout<<freq[i]<<" ";
+        }
+        cout<<endl;
+       */ 
+       ll total=0;//total no of possible subsets
+        for(ll i=0;i<n;i++){
+            total+=(freq[i]*(freq[i]-1))/2;
+        }
+        cout<<total<<endl;
+    }
+}
+
+
+
+
+
+
+//soln code
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+ll a[1000005]{0},prefixSum[1000005]{0};
+int main(){
+    ll n,t,sum;cin>>t;
+    while(t--){
+        cin>>n;
+        sum=0;
+        memset(prefixSum,0,sizeof prefixSum); ///use this to reinitialize array with all 0 entries
+        prefixSum[0]=1;
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+            sum+=a[i];
+            sum%=n;
+            //if we get negative then
+            sum=(sum+n)%n;
+            prefixSum[sum]++;
+        }
+        ll total=0;
+        for(int i=0;i<n;i++){
+            ll ans=prefixSum[i];
+            total+=(ans*(ans-1))/2;
+        }
+        cout<<total<<endl;
+        
+    }
+    return 0;
+}
+
+
+//same code 
+
+#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int t,n,sum;
+    cin>>t;
+    int arr[100000];
+    int freqarr[100000];
+    while(t--){
+        cin>>n;
+        memset(freqarr,0,sizeof freqarr);
+        freqarr[0]=1;
+        sum=0;
+        for(int i=0;i<n;i++){
+            cin>>arr[i];
+            sum+=arr[i];
+            cout<<sum<<" ";
+            sum%=n;
+            //if we get negative then
+            sum=(sum+n)%n;
+            cout<<sum<<" ";
+            freqarr[sum]++;
+        }
+        int total=0;
+        for(int i=0;i<n;i++){
+            total+=(freqarr[i]*(freqarr[i]-1))/2;
+        }
+        cout<<total<<endl;
+    }
+    return 0;
+}
