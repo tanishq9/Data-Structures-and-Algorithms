@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+//in O(rootN)
+bool isprime(int n){
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0){
+            return false;
+        }
+    }
+    return true;
+}
+//optimising it a bit by not checking for all even nos
+bool isprimealter(int n){
+    if(n==1){//by defination 1 is not a prime number
+        return false;
+    }
+    else if(n==2){//the only even prime number
+        return true;
+    }
+    else if(n%2==0){
+        return false;
+    }
+    else {
+        for(int i=3;i*i<=n;i+=2){
+            if(n%i==0){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+//but what if we want to check how many nos in a series are prime then if we use above algo then it gonna take O(N*rootN) time
+
+int main() {
+    int n;cin>>n;
+    if(isprimealter(n)){
+        cout<<"PRIME"<<endl;
+    }else{
+        cout<<"NOT PRIME"<<endl;
+    }
+    return 0;
+}
+

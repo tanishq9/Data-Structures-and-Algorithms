@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+ll n,m;
+int p[1001];
+
+void sieve(ll m){
+    memset(p,1,sizeof p);
+    for(int i=2;i<=m;i+=2){
+        p[i]=0;
+    }
+    p[2]=1;
+    for(int i=3;i<=m;i++){
+        if(p[i]){
+            for(int j=i*i;j<=m;j+=2*i){
+                p[j]=0;
+            }
+        }
+    }
+    p[0]=0;
+    p[1]=0;
+   /* for(int i=2;i<=m;i++){
+        if(p[i]){
+            cout<<i<<" ";
+        }
+    }*/
+}
+
+
+ll segmentedSieve(ll n,ll m){
+    sieve(sqrt(m));
+    int arr[m-n+1];
+    memset(arr,1,sizeof arr);//assume all numbers are prime in the starting
+    for(int i=2;i*i<=m;i++){
+        for(int j=n;j<=m;j++){
+            if(p[i]){
+                if(j%i==0){
+                    arr[j-n]=0;
+                }
+            }
+        }
+    }
+    int res=0;
+    for(int i=n;i<=m;i++){
+        if(arr[i-n]){
+            cout<<i<<" "; 
+            res++;
+        }
+    }
+    cout<<"total primes btw them are: ";
+    return res;
+}
+
+int main() {
+    cin>>n>>m;
+    cout<<segmentedSieve(n,m);
+}
+

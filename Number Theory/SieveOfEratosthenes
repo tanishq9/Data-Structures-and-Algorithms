@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+//optimised sieve
+
+void sieveOpt(int n){
+    int arr[n+1];
+    memset(arr,1,sizeof arr);
+    for(int i=2;i<=n;i+=2){
+        arr[i]=0;//1 implies prime and 0 implies not prime
+    }
+    arr[2]=1;//only even prime
+    for(int i=3;i<=n;i+=2){
+        //iterating over only the odd numbers
+
+        if(arr[i]){
+	        //not checking for every multiple instead checking for just i*i + i/2i/3i till <= 10000000
+
+            for(int j=i*i;j<=n;j+=i){
+                arr[j]=0;    
+            }
+        }
+    }
+                  
+    arr[0]=0;
+    arr[1]=0;
+    for(int i=2;i<=n;i++){
+        if(arr[i]){
+            cout<<i<<" ";
+        }
+    }
+    cout<<endl;
+}
+
+int main() {
+//    sieve();
+    int n;cin>>n;
+    sieveOpt(n);
+}
+
