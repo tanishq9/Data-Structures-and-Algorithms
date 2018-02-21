@@ -1,0 +1,69 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+typedef long long int ll;
+//this is the O(rootN) method to find the prime divisors of a numbers
+void generatePrime(int n){
+
+    int arr[n+1];
+
+    memset(arr,0,sizeof arr);//only works for setting 0 not for other methods
+
+    /*for(int i=1;i<=n;i++){
+        cout<<arr[i]<<" ";
+    }*/
+
+    //cout<<endl;
+
+    for(int i=2;i*i<=n;i++){
+         if(n%i==0){
+             if(i*i!=n){
+                cout<<i<<" "<<n/i<<" ";
+             }else{
+                cout<<i<<" ";
+             }
+        }
+    }
+}
+
+//using sieve to get prime divisors of a number
+//in log2N time we are able to find all prime factors
+void sievePrimeDivisors(int n){
+    int arr[n+1];
+
+    memset(arr,0,(n+1)*sizeof(arr[0]));
+
+    for(int i=0;i<=n;i++){
+        cout<<arr[i]<<" ";
+    }
+
+    cout<<endl;
+
+    for(int i=2;i<=n;i++){
+        if(arr[i]==0){
+            for(int j=i;j<=n;j+=i){
+                arr[j]=i;
+            }
+        }
+    }
+    arr[0]=1;arr[1]=1;
+    for(int i=0;i<=n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    while(arr[n]!=1){
+        ///check if it aint perfect prime
+        cout<<arr[n]<<" ";
+        n=n/arr[n];
+    }
+}
+
+int main() {
+    int n;cin>>n;
+    ///for generating all factors of a number in 0(rootN)
+    generateAllFactors(n);
+    ///for generating only the prime divisors of a number in 0(nloglogn) same as sieve!
+    sievePrimeDivisors(n);
+    return 0;
+}
+
