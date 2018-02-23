@@ -1,0 +1,96 @@
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+using namespace std;
+
+
+template<typename T>
+class Graph{
+    //These are private by default
+    int V;
+    map<T,list<T> > leaders;
+
+    public :
+
+        Graph(){
+            
+        }
+
+        //constructor
+        Graph(int v){
+            V=v;
+            leaders=new map<string,list<string> >;
+        }
+
+        void addEdge(T u,T v,bool bidr=true){
+            leaders[u].push_back(v);
+            if(bidr){
+                leaders[v].push_back(u);
+            }
+        }
+        
+        void bfs(T src){
+            queue<T> myq;
+            map<T,bool> visited;
+            visited[src]=true;
+            myq.push(src);
+            while(!myq.empty()){
+                T currentNode=myq.front();
+                myq.pop();
+                cout<<currentNode<<" ";
+                for(auto ngbhr:leaders[currentNode]){
+                    if(!visited[ngbhr]){
+                        myq.push(ngbhr);
+                        visited[ngbhr]=true;
+                    }
+                }
+            }
+            cout<<endl;
+        }
+        
+        void dfs(T node,map<T,bool> &visited){
+            //whenever you come to a node,mark it visited
+            visited[node]=true;
+            cout<<node<<" ";
+            //try to find out the node which is not yet visited and mark it true
+            for(auto ngbhr:leaders[node]){
+                if(!visited[ngbhr]){
+                    dfs(ngbhr,visited);
+                }
+             }
+             return;//obvious statement tho not required
+        }
+        
+        void dfs(T src){
+            map<T,bool> visited;
+            dfs(src,visited);
+        }
+
+        void printList(){
+            for(auto leader:leaders){
+                cout<<leader.first<<"->";//delhi->mumbai,chennai i.e string->list ,it is map<string,list>
+                for(auto frnd:leaders[leader.first]){//leader.second par list padi hai
+                    cout<<frnd<<",";
+                }
+                cout<<"END"<<endl;
+            }
+        }
+};
+
+int main() {
+    Graph<int> g;
+    g.addEdge(0,1);
+    g.addEdge(0,4);
+    g.addEdge(1,2);
+    g.addEdge(2,4);
+    g.addEdge(2,3);
+    g.addEdge(4,3);
+    g.addEdge(3,5);
+    //g.bfs(0);
+    //g.printList();
+    g.dfs(0);
+    
+    return 0;
+}
+

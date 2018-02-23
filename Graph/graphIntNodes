@@ -1,0 +1,44 @@
+#include <iostream>
+#include <list>
+using namespace std;
+
+class Graph{
+    //These are private by default
+    int V;
+    list<int> *l;
+
+    public :
+        //constructor
+        Graph(int v){
+            V=v;
+            l=new list<int>[V];
+        }
+        
+        void addEdge(int u,int v,bool bidr=true){
+            l[u].push_back(v);
+            if(bidr){
+                l[v].push_back(u);
+            }
+        }
+        
+        void printList(){
+            for(int i=0;i<V;i++){
+                cout<<i<<"->";
+                for(int vertex:l[i]){//array ke uss index pe list padi hai
+                    cout<<vertex<<",";
+                }cout<<"END"<<endl;
+            }
+        }
+};
+
+int main() {
+    Graph g(5);
+    g.addEdge(0,1);
+    g.addEdge(0,2);
+    g.addEdge(1,3);
+    g.addEdge(2,3);
+    g.addEdge(1,2);
+    g.printList();
+    
+}
+
