@@ -67,6 +67,32 @@ class Graph{
             dfs(src,visited);
         }
 
+  ///SSSP for unweighted graphs
+        
+        void sssp(T src){
+            map<T,bool> visited;
+            visited[src]=true;
+            map<T,int> distance;
+            distance[src]=0;
+            map<T,T> parent;
+            parent[src]=src;
+            queue<T> myq;
+            myq.push(src);
+            while(!myq.empty()){
+                T node=myq.front();
+                myq.pop();
+                for(auto ngbhr:mymap[node]){
+                    if(!visited[ngbhr]){
+                        distance[ngbhr]=distance[node]+1;
+                        visited[ngbhr]=true;
+                        myq.push(ngbhr);
+                    }
+                }
+            }
+            for(auto entry:mymap){
+                cout<<entry.first<<" is "<<distance[entry.first]<<" units away."<<endl;
+            }
+        }
         void printList(){
             for(auto leader:leaders){
                 cout<<leader.first<<"->";//delhi->mumbai,chennai i.e string->list ,it is map<string,list>
