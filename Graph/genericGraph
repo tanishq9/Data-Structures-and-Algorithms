@@ -1,73 +1,70 @@
 #include <iostream>
-#include <list>
 #include <map>
+#include <list>
 #include <queue>
 using namespace std;
 
 
 template<typename T>
 class Graph{
-    //These are private by default
-    int V;
-    map<T,list<T> > leaders;
+    int V;//number of vertices
+    map<T,list<T> > mymap;
 
-    public :
-
+    //member functions
+    public:
+        //constructor
+        
         Graph(){
             
         }
-
-        //constructor
+        
         Graph(int v){
             V=v;
-            leaders=new map<string,list<string> >;
+            mymap = new map<T,list<T> >;
         }
-
         void addEdge(T u,T v,bool bidr=true){
-            leaders[u].push_back(v);
-            if(bidr){
-                leaders[v].push_back(u);
-            }
+            mymap[u].push_back(v);
+            if(bidr)
+                mymap[v].push_back(u);
         }
         
         void bfs(T src){
-            queue<T> myq;
+            //by default are set false
             map<T,bool> visited;
             visited[src]=true;
-            myq.push(src);
-            while(!myq.empty()){
-                T currentNode=myq.front();
-                myq.pop();
-                cout<<currentNode<<" ";
-                for(auto ngbhr:leaders[currentNode]){
-                    if(!visited[ngbhr]){
-                        myq.push(ngbhr);
-                        visited[ngbhr]=true;
+            queue<T> entries;
+            entries.push(src);
+            while(!entries.empty()){
+                T parent=entries.front();
+                entries.pop();
+                cout<<parent<<" ";
+                for(auto child:mymap[parent]){
+                    if(!visited[child]){
+                        visited[child]=true;
+                        entries.push(child);
                     }
                 }
             }
             cout<<endl;
         }
         
-        void dfs(T node,map<T,bool> &visited){
-            //whenever you come to a node,mark it visited
+        void dfshelper(T node,map<T,bool> &visited){
             visited[node]=true;
             cout<<node<<" ";
-            //try to find out the node which is not yet visited and mark it true
-            for(auto ngbhr:leaders[node]){
+            for(auto ngbhr:mymap[node]){
                 if(!visited[ngbhr]){
-                    dfs(ngbhr,visited);
+                    dfshelper(ngbhr,visited);
                 }
-             }
-             return;//obvious statement tho not required
+            }
         }
         
         void dfs(T src){
             map<T,bool> visited;
-            dfs(src,visited);
+            dfshelper(src,visited);
+            cout<<endl;
         }
-
-  ///SSSP for unweighted graphs
+        
+        ///SSSP for unweighted graphs
         
         void sssp(T src){
             map<T,bool> visited;
@@ -93,11 +90,64 @@ class Graph{
                 cout<<entry.first<<" is "<<distance[entry.first]<<" units away."<<endl;
             }
         }
-        void printList(){
-            for(auto leader:leaders){
-                cout<<leader.first<<"->";//delhi->mumbai,chennai i.e string->list ,it is map<string,list>
-                for(auto frnd:leaders[leader.first]){//leader.second par list padi hai
-                    cout<<frnd<<",";
+        
+
+        void connectedComponentshelper(T node,map<T,bool> &visited){
+            visited[node]=true;//mark the visited node as true
+            for(auto ngbhr:mymap[node]){
+                if(!visited[ngbhr]){
+                    connectedComponentshelper(ngbhr,visited);
+                }
+            }
+        }
+
+        void connectedComponents(T src){
+            map<T,bool> visited;
+            int comp=1;
+            for(auto entry:visited){
+                cout<<entry.first<<endl;
+            }
+            connectedComponentshelper(src,visited);
+            for(auto entry:mymap){
+                T node=entry.first;
+                if(!visited[node]){
+                    connectedComponentshelper(entry.first,visited);
+                    comp++;
+                }
+            }
+            cout<<comp<<endl;
+        }
+        
+        bool cycleDetectionUsingBFS(T src){
+            map<T,bool> visited;
+            visited[src]=true;
+            map<T,T> parent;
+            parent[src]=src;
+            queue<T> myq;
+            myq.push(src);
+            while(!myq.empty()){
+                T node=myq.front();
+                myq.pop();
+                for(auto ngbhr:mymap[node]){
+                    if(visited[ngbhr]==true && parent[node]!=ngbhr){
+                        return true;
+                    }
+                    else if(!visited[ngbhr]){
+                        visited[ngbhr]=true;
+                        parent[ngbhr]=node;
+                        myq.push(ngbhr);
+                    }
+                }
+                
+            }
+            return false;
+        }
+        
+        void display(){
+            for(auto key:mymap){
+                cout<<key.first<<" ";
+                for(auto value:key.second){
+                    cout<<value<<",";
                 }
                 cout<<"END"<<endl;
             }
@@ -107,16 +157,24 @@ class Graph{
 int main() {
     Graph<int> g;
     g.addEdge(0,1);
-    g.addEdge(0,4);
-    g.addEdge(1,2);
-    g.addEdge(2,4);
+    g.addEdge(0,2);
+    g.addEdge(1,3);
     g.addEdge(2,3);
-    g.addEdge(4,3);
     g.addEdge(3,5);
+    g.display();
+    g.addEdge(6,7);
     //g.bfs(0);
-    //g.printList();
-    g.dfs(0);
-    
-    return 0;
+    //g.dfs(0);
+    //g.connectedComponents(0);
+    //g.sssp(0);
+    Graph<int> gr;
+    gr.addEdge(0,1);
+    gr.addEdge(1,2);
+   // gr.addEdge(0,2);
+    if(gr.cycleDetectionUsingBFS(0)){
+        cout<<"cycle"<<endl;
+    }else{
+        cout<<"no cycle"<<endl;
+    }
 }
 
