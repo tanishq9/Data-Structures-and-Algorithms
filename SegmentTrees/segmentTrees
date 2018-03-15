@@ -1,0 +1,106 @@
+#include <iostream>
+using namespace std;
+int MAX=1000;
+//similiar to post order as the parent node is filled after the leaf nodes
+//building takes 0(n) time
+void buildTree(int *tree,int *a,int index,int s,int e){
+    //Do nothing
+    if(s>e){
+        return;
+    }
+    //Base case-Leaf node
+    if(s==e){
+        tree[index]=a[s];
+        return;
+    }
+    int mid=(s+e)/2;
+    //left subtree
+    buildTree(tree,a,2*index,s,mid);
+    //right subtree
+    buildTree(tree,a,2*index+1,mid+1,e);
+    
+    int left=tree[2*index];
+    int right=tree[2*index+1];
+    tree[index]=min(left,right);
+}
+
+int query(int *tree,int index,int s,int e,int qs,int qe){
+    //No overlap
+    if(qs>e || qe<s){
+        return MAX;
+    }
+    //Complete overlap
+    if(qe>=e && s>=qs){
+        return tree[index];
+    }
+    //Partial overlap(call on both sides)
+    int mid=(s+e)/2;
+    int left=query(tree,2*index,s,mid,qs,qe);
+    int right=query(tree,2*index+1,mid+1,e,qs,qe);
+    return min(left,right);
+}
+
+//Node update-works in 0(logn)
+void nodeUpdate(int *tree,int index,int s,int e,int i,int value){
+    
+    //index is out of range
+    if(i<s && i>e){
+        return;
+    }
+    
+    //we update the leaf node
+    if(s==e){
+        tree[index]=value;
+        return;
+    }
+    
+    //partial overlap
+    int mid=(s+e)/2;
+    nodeUpdate(tree,2*index,s,mid,i,value);
+    nodeUpdate(tree,2*index+1,mid+1,e,i,value);
+    //now update the tree
+    tree[index]=min(tree[2*index],tree[2*index+1]);
+    return;
+}
+
+//range update-works in 0(n)
+void updateRange(int *tree,int index,int s,int e,int rs,int re,int value){
+    //reached last node
+    if(s==e){
+        tree[index]+=value;
+    }
+    //no overlap
+    if(re<s || rs>e){
+        return;
+    }
+    //otherwise partial overlap
+    int mid=(s+e)/2;
+    updateRange(tree,2*index,s,mid,rs,re,value);
+    updateRange(tree,2*index+1,mid+1,e,rs,re,value);
+    tree[index]=min(tree[2*index],tree[2*index+1]);
+    return;
+}
+
+int main() {
+    int arr[]={1,3,2,-2,4,5};
+    int n=sizeof(arr)/sizeof(int);
+    cout<<n<<endl;
+    //Build tree
+    int *tree=new int[4*n+1];
+    int s=0,e=n-1;
+    buildTree(tree,arr,1,s,e);
+    for(int i=0;i<4*n;i++){
+        cout<<tree[i]<<" ";
+    }
+    nodeUpdate(tree,1,s,e,8,3);
+    cout<<endl;
+    int q;cin>>q;
+    while(q--){
+        int qs,qe;
+        cin>>qs>>qe;
+        cout<<"The minimum value between range is "<<query(tree,1,s,e,qs,qe)<<endl;
+    }
+   
+    return 0;
+}
+
