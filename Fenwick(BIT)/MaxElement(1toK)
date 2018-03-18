@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+//int prev=INT_MIN;
+
+void update(int *bit,int i,int n,int inc){
+    while(i<=n){
+        bit[i]=max(inc,bit[i]);
+        i+=(i&(-i));
+    }
+}
+
+int query(int *bit,int i,int n){
+    int sum=INT_MIN;
+    while(i>0){
+        if(bit[i]>sum){
+            sum=bit[i];
+        }
+        i-=(i&(-i));
+    }
+    return sum;
+}
+
+int main() {
+    int n;cin>>n;
+    int *arr=new int[n];
+    int *bit=new int[n]{0};
+    int prev=INT_MIN;
+    //memset(bit,0,sizeof bit);
+    for(int i=1;i<=n;i++){
+        cin>>arr[i];
+        update(bit,i,n,arr[i]);    
+    }
+    for(int i=1;i<=n;i++){
+        cout<<arr[i]<<" ";
+    }cout<<endl;
+    for(int i=1;i<=n;i++){
+        cout<<bit[i]<<" ";
+    }cout<<endl;
+    int q,l,r;cin>>q;
+    update(bit,3,n,6);
+    while(q--){
+        //cin>>l>>r;
+        cin>>l;
+        cout<<query(bit,l,n)<<endl;
+    }
+    return 0;
+}
+

@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+#define MAX 5000
+
+int *bit=new int[MAX];
+
+void update(int *bit,int i,int inc){
+    while(i<=n){
+        bit[i]+=inc;
+        i+=(i&(i-1));
+    }
+}
+
+void build(int *bit,int arr){
+    for(int i=1;i<=n;i++){
+        update(bit,i,arr[i]);
+    }
+}
+
+//(l,r) = query(r)-query(l-1)
+
+int query(int i){
+    int sum=0;
+    while(i>0){
+        sum+=bit[i];
+        i-=(i&(-i));
+    }    
+    return sum;
+}
+
+int main() {
+    int arr[]={};
+    
+}
+

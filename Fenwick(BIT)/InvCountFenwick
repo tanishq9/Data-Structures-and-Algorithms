@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+int MAX=1001;
+
+void update(int *bit,int i,int n,int inc){
+    while(i<=n){
+        bit[i]+=inc;
+        i+=(i&(-i));
+    }
+}
+
+int query(int *bit,int i,int n){
+    int sum=0;
+    while(i>0){
+        sum+=bit[i];
+        i-=(i&(-i));
+    }
+    return sum;
+}
+
+int main() {
+    int n,ans=0;
+    int arr[MAX];
+    int bit[MAX]{0};
+    //in o(nlogn)
+    int t;cin>>t;
+    while(t--){
+        cin>>n;
+        for(int i=1;i<=n;i++){
+            cin>>arr[i];
+        }
+        for(int i=n;i>=1;i--){
+            ans+=query(bit,arr[i]-1,n);
+            update(bit,arr[i],n,1);
+        }
+        cout<<ans<<endl;
+        for(int i=1;i<=MAX;i++){
+            bit[i]=0;
+        }
+        ans=0;
+    }
+    return 0;
+}
+
