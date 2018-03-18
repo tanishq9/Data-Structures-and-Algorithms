@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void update(int *blocks,int *arr,int i,int value,int rn){
+    int block_size=i/rn;
+    blocks[block_size]+=value-arr[i];
+    arr[i]=value;
+}
+
+int query(int *blocks,int *arr,int l,int r,int rn){
+    int ans=0;
+    //left part
+    while(l<r && l!=0 && l%rn!=0){
+        ans+=arr[l];//just like we do in merge sort
+        l++;
+    }
+    //middle part
+    while(l+rn<=r){
+        int block_id=l/rn;
+        ans+=blocks[block_id];
+        l+=rn;
+    }
+    //right part
+    while(l<=r){
+        ans+=arr[l];
+        l++;
+    }
+    return ans;
+}
+
+int main(){
+    int arr[]={1,3,5,2,7,6,3,1,4,8};
+    int n=sizeof(arr)/sizeof(int);
+    int rn=sqrt(n);
+    int blocks[rn+1]{0};
+    int block_size=-1;
+    
+    //building this blocks array or we say it pre processing takes 0(N) time
+    for(int i=0;i<n;i++){
+        if(i%rn==0){
+            block_size++;
+        }
+        blocks[block_size]+=arr[i];
+    }
+    
+    for(int i=0;i<=rn;i++){
+        cout<<blocks[i]<<" ";
+    }
+    cout<<endl;
+    update(blocks,arr,2,6,rn);
+    cout<<query(blocks,arr,2,6,rn);
+    
+    return 0;
+}
