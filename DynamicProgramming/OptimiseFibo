@@ -1,0 +1,158 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+typedef long long ll;
+//In matrix expo,we analyse the recurrence and proceed like this
+ll k=2;
+vector<ll> coeff,initial;
+
+int fib(int n){
+    if(n==1 || n==0)
+        return n;
+    return fib(n-1)+fib(n-2);
+}
+
+//bottom up DP
+int bottomUpDP(int n){
+    int *dp=new int[n];
+    //initial seed
+    dp[0]=0;
+    dp[1]=1;
+
+    for(int i=2;i<=n;i++){
+        dp[i]=dp[i-1]+dp[i-2];
+    }
+    return dp[n];
+}
+
+//top down DP-> recursion + memoisation
+int topdownDP(int n,int *dp){
+    if(n==0 || n==1){
+        dp[n]=n;
+        return n;
+    }    
+    //already computed
+    if(dp[n]!=-1){
+        return dp[n];
+    }
+    //else compute and store it
+    dp[n]=topdownDP(n-1,dp)+topdownDP(n-2,dp);
+    return dp[n];
+}
+
+vector<vector<ll> > multiply(vector<vector<ll> > A,vector<vector<ll> > B){
+    vector<vector<ll> > result(k+1,vector<ll>(k+1));//since indexing is from 1
+    for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            for(int x=1;x<=k;x++){
+                result[i][j]+=(A[i][x]*B[x][j]);
+            }
+        }
+    }
+    return result;
+}
+
+vector<vector<ll> > power(vector<vector<ll> > tmatrix,ll n){
+    if(n==1){
+        return tmatrix;
+    }
+    if(n&1){
+        return multiply(tmatrix,power(tmatrix,n-1));
+    }else{
+        return multiply(power(tmatrix,n/2),power(tmatrix,n/2));
+    }
+}
+
+//By Matrix Exponentiation
+//T*F(i)=F(i+1); or  F(n) = T^n-1 * F(1)
+ll compute(ll n){
+    if(n==0 || n==1){
+        return n;
+    }
+    vector<ll> F1(k+1);
+    //computing F(1)
+    for(int i=1;i<=k;i++){
+        F1[i]=initial[i-1];
+    }
+
+    /*for(auto ptr=F1.begin();ptr!=F1.end();ptr++){
+        cout<<*ptr<<" ";
+    }*/
+
+    //now make a 2D vector Matrix 
+    vector<vector<ll> > tmatrix(k+1,vector<ll>(k+1));
+    //k+1 because we are indexing the matrix from 1
+    
+    for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            if(i<k){
+                if(j==i+1){
+                    tmatrix[i][j]=1;
+                }else{
+                    tmatrix[i][j]=0;
+                }
+            }else{
+                //fill the coeff in reverse order in the last row
+                tmatrix[i][j]=coeff[k-j];
+            }
+        }
+    }
+
+    /*for(int i=1;i<=k;i++){
+        for(int j=1;j<=k;j++){
+            cout<<tmatrix[i][j]<<" ";
+        }
+        cout<<endl;
+    }*/
+    
+    //now find T^n-1 USING power method
+    tmatrix=power(tmatrix,n-1);
+    // for(int i=1;i<=k;i++){
+    //     for(int j=1;j<=k;j++){
+    //         cout<<tmatrix[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    ll ans=0;
+    for(int i=1;i<=k;i++){
+        ans=ans+(tmatrix[k][i]*F1[i]);
+    }
+    return ans;
+}
+
+int fibOpt(int n){
+    int a=0,b=1,c=a+b;
+    for(int i=2;i<=n;i++){
+        c=a+b;
+        a=b;
+        b=c;
+    }
+    return c;
+}
+
+int main() {
+    int n=5;int dp[n+1];
+    for(int i=0;i<=n;i++){
+        dp[i]=-1;
+    }
+    //initial Seed for coeff and initial array eg. here, f(i-1) + f(i-2) ,so c1=1 ,c2=1 and f(0)=0 , f(1)=1
+    coeff.push_back(1);
+    coeff.push_back(1);
+    //cout<<coeff.size()<<" "<<coeff.at(1)<<endl;
+    initial.push_back(0);
+    initial.push_back(1);
+    //cout<<fib(5)<<endl;
+    //cout<<bottomUpDP(n)<<endl<<topdownDP(n,dp);
+    //cout<<compute(0)<<endl<<compute(1)<<endl<<compute(2)<<endl<<compute(3)<<endl<<compute(4)<<endl<<compute(5)<<endl;
+    cout<<"by recursion :0(2^n)-->"<<fib(5)<<endl;//due to number of nodes at each level
+    cout<<"by topdownDP :0(2n-1)-->"<<fib(5)<<endl;//2n-1 are the total function calls
+    cout<<"by bottomUpDP :0(n)-->"<<fib(5)<<endl;//it is an iterative approach
+    cout<<"by matrix expo :0(k^3*logn)-->"<<fib(5)<<endl;
+    //cout<<fibOpt(1)<<endl<<fibOpt(2)<<endl<<fibOpt(3)<<endl<<fibOpt(4)<<endl<<fibOpt(5)<<endl;
+    //space complexiity:it is maximum space consumed during the program , it will be 0(n) in all 3 cases (max space utilisation)
+    //it is the max. depth of recursion
+    //in bottomUpDP because we take array of size n 
+    //and in topdownDP and recursion , because the maximum height of stack will be always or in any case will be 0(n)
+    
+}
+
