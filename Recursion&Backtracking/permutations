@@ -1,0 +1,29 @@
+#include <iostream>
+#include <set>
+using namespace std;
+set<string> s;
+void permute(char *in,int i){
+    if(in[i]=='\0'){
+        //out[j]='\0';
+        string a=in;
+        s.insert(a);
+        //cout<<out;
+        return;
+    }
+    for(int j=i;in[j]!='\0';j++){
+        swap(in[i],in[j]);
+        permute(in,i+1);
+        //backtracking step
+        swap(in[i],in[j]);
+    }
+    return;
+}
+
+int main() {
+    char intput[]="abc";
+    permute(intput,0);
+    for(auto ptr=s.begin();ptr!=s.end();ptr++){
+        cout<<*ptr<<endl;
+    }
+}
+
