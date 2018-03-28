@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+int dp[100][100]={0};
+//recursion
+int maxProfit(int *arr,int i,int j,int days){
+    if(i>j){
+        return 0;
+    }
+    int first=arr[j]*days+maxProfit(arr,i,j-1,days+1);
+    int second=arr[i]*days+maxProfit(arr,i+1,j,days+1);
+    return max(first,second);
+}
+//recursion+memoisation
+int maxWineProfit(int *arr,int i,int j,int days){
+    if(i>j){
+        return 0;
+    }
+    if(dp[i][j]!=0){
+        return dp[i][j];
+    }
+    int first=arr[j]*days+maxProfit(arr,i,j-1,days+1);
+    int second=arr[i]*days+maxProfit(arr,i+1,j,days+1);
+    return dp[i][j]=max(first,second);
+}
+
+int main() {
+    int arr[]={2,3,5,1,4};
+    int i=0,j=4,n=4,days=1;
+    cout<<maxProfit(arr,i,j,days)<<endl<<maxWineProfit(arr,i,j,days);   
+}
+

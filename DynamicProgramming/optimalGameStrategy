@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+int findMaxMargin(int *arr,int i,int j){
+    if(i>j){
+        return 0;
+    }
+    int first=arr[i]+min(findMaxMargin(arr,i+1,j-1),findMaxMargin(arr,i+2,j));
+    int second=arr[j]+min(findMaxMargin(arr,i+1,j-1),findMaxMargin(arr,i,j-2));
+    return max(first,second);
+}
+
+int main() {
+    int arr[]={2,1,7,3};
+    cout<<findMaxMargin(arr,0,3);
+}
+

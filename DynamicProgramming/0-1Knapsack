@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+//0-1 Knapsack
+int Knapsack(int *wts,int *prices,int N,int capacity){
+    int T[N+1][capacity+1]={0};
+    int weights[N+1]{0};
+    int price[N+1]{0};
+    ///Init the T matrix
+    for(int i=0;i<=N;i++){
+        for(int j=0;j<=capacity;j++){
+            T[i][j]=0;
+        }
+    }
+    for(int i=1;i<=N;i++){
+        weights[i]=wts[i-1];
+        price[i]=prices[i-1];
+    }
+    int include,exclude;
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=capacity;j++){
+            include=0;exclude=0;
+            if(i!=0){
+                exclude=T[i-1][j];
+            }
+            if((j-weights[i])>=0){///can it even be included ?
+                include=price[i]+T[i-1][j-weights[i]];
+            }
+            T[i][j]=max(include,exclude);
+        }
+    }
+  
+    return T[N][capacity];
+}
+
+int main() {
+    int wts[2001];
+    int prices[2001];
+    int N=4,capacity=7;
+    cin>>capacity;
+    cin>>N;
+    for(int i=0;i<N;i++){
+        cin>>wts[i]>>prices[i];
+    }
+    cout<<Knapsack(wts,prices,N,capacity);
+    return 0;
+}
+

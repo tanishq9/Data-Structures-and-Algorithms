@@ -1,80 +1,55 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-//n is the number of steps and k is the maximum jump
-//works in 0(k^n)
-int steps(int n,int k){
-    if(n<0)
+//by recursion
+int minCoinsRecur(int *coins,int num,int amount){
+    if(amount<0){
         return 0;
-    if(n==0 || n==1)
-        return 1;
-    int ans=0;
-    for(int i=1;i<=k;i++){
-        ans+=steps(n-i,k);
     }
-    return ans;
-} 
+    if(amount==0){
+        return 0;
+    }
+    int val=INT_MAX;
+    for(int i=0;i<num;i++){
+        if((amount-coins[i])>=0){
+            val=min(val,minCoinsRecur(coins,num,amount-coins[i]));
+        }
+    }
+    return val+1;
+    
+}
 
-
-//bottom up DP-0(n*k) time -> 2 for loops iterating over them n and k times resp
-int stepsBU(int n,int k){
-    int *dp=new int[n+1];
-    dp[0]=1;dp[1]=1;
-    for(int i=2;i<=n;i++){
-        dp[i]=0;
-        for(int j=1;j<=k;j++){
-            if(i-j>=0){
-                dp[i]+=dp[i-j];
+//min coins needed by DP
+void minCoins(int *coins,int num,int amount){//num is the number of coins
+    int arr[amount+1]{0};
+    int val;
+    for(int i=0;i<=amount;i++){
+        arr[i]=0;
+    }
+    arr[0]=1;
+    for(int i=1;i<=amount;i++){
+        val=INT_MAX;
+        for(int j=0;j<num;j++){
+            if(i==coins[j]){
+                arr[i]=1;
+                break;
+            }
+            else if((i-coins[j])>=0){
+                val=min(val,arr[i-coins[j]]);
             }
         }
-    }
-    return dp[n];
-}
-
-//recursion + memoisation
-int stepsTD(int n,int k,int *dp){
-    if(n<0){
-        return 0;
-    }
-    if(n==0 || n==1){
-        dp[n]=1;
-        return 1;
-    }
-    //if already computed then return
-    if(dp[n]!=-1){
-        return dp[n];
-    }
-    //else compute it and store
-    int ans=0;//initially every steps pe pahuchne ke 0 ways hai
-    for(int i=1;i<=k;i++){
-        ans+=stepsTD(n-i,k,dp);
-    }
-    dp[n]=ans;
-//    dp[n]=stepsTD(n-1,k,dp)+stepsTD(n-2,k,dp)+stepsTD(n-3,k,dp);
-    return dp[n];    
-}
-
-//works in 0(n) using this approach->only one for loop
-int stepsOpt(int n,int k){
-    int *dp=new int[n+1];
-    dp[0]=1;dp[1]=1;
-    for(int i=2;i<=n;i++){
-        if(i-k>=0){
-            dp[i]=2*dp[i-1]-dp[i-k];
+        if(arr[i]!=1){
+            arr[i]=val+1;
         }
-    }
-    return dp[n];
+    }            
+    cout<<arr[amount]<<endl;
 }
-
 
 int main() {
-    cout<<steps(6,3)<<endl;
-    cout<<stepsBU(6,3)<<endl;
-    int n=5;
-    int *dp=new int[n+1];
-    for(int i=0;i<=n;i++){
-        dp[i]=-1;
-    }
-    cout<<stepsTD(5,3,dp)<<endl;
+    int coins[]={1,7,10};
+    int amount=35,num=3;
+    cout<<minCoinsRecur(coins,num,amount);
+    //minCoins(coins,num,amount);
+    return 0;
 }
 

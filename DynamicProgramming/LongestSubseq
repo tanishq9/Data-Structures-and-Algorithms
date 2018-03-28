@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+int lcs(char *s1,char *s2){
+    int l1=strlen(s1);
+    int l2=strlen(s2);
+    int T[l1+1][l2+1];
+    for(int i=0;i<=l1;i++){
+        for(int j=0;j<=l2;j++){
+            T[i][j]=0;
+        }
+    }
+    for(int i=1;i<=l1;i++){
+        for(int j=1;j<=l2;j++){
+            if(s1[i-1]==s2[j-1]){
+                T[i][j]=T[i-1][j-1]+1;
+                continue;
+            }else{
+                T[i][j]=max(T[i-1][j],T[i][j-1]);
+            }
+        }
+    }
+    for(int i=1;i<=l1;i++){
+        for(int j=1;j<=l2;j++){
+            cout<<T[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    return T[l1][l2];
+}
+int main() {
+    char s1[10],s2[10],s3[10],s4[10];
+    cin>>s1>>s2;
+    cout<<lcs(s1,s2);
+}
+
