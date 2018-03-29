@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool isSafe(int matrix[10][10],int r,int c,int n){
+    //check for same column
+    for(int i=0;i<r;i++){
+        if(matrix[i][c]==1){
+            return false;
+        }
+    }
+    //check for left diagonal
+    int i=r-1;
+    int j=c-1;
+    while(i>=0 && j>=0){
+        if(matrix[i][j]==1){
+            return false;
+        }
+        i--;
+        j--;
+    }
+    i=r-1;
+    j=c+1;
+    while(i>=0 && j<n){
+        if(matrix[i][j]==1){
+            return false;
+        }
+        i--;
+        j++;
+    }
+    return true;
+}
+
+//BY RECURSION
+//r is the current row , and n is the total number of rows,since indexing of rows is done from 0 to n-1 ,therefore n is when all rows are traversed
+bool solveNQueen(int matrix[10][10],int r,int n){
+    //Base case
+    if(r==n){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]==1){
+                    cout<<"Q";
+                }
+                else{
+                    cout<<"_";
+                }
+            }
+            cout<<endl;
+        }
+        cout<<endl<<endl;
+        return false;//our assumption was right and we just return true,return false if you want to print all the configrations
+    }
+    //Recursion
+    for(int j=0;j<n;j++){
+        if(isSafe(matrix,r,j,n)){
+            //first place the queen
+            matrix[r][j]=1;
+            bool nextQueenRakhPaye=solveNQueen(matrix,r+1,n);
+            if(nextQueenRakhPaye){//if we are able to continue with the valid configration
+                return true;
+            }
+            //means i,j is not the right position implies previous configration has to be changed
+            //our assumption was wrong
+            matrix[r][j]=0;//Backtrack
+        }
+    }
+    //you have tried for all positions in current row but could not place a queen
+    return false;
+}
+
+
+int main() {
+    int matrix[10][10]={0};
+    solveNQueen(matrix,0,4);
+    return 0;
+}
+

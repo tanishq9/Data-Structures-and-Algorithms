@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bitset<10> d1,d2,c;
+int ans=0;
+void nQueenBit(int matrix[10][10],int i,int n,int &ans){//i is the current row
+    if(i==n){
+        ans++;
+        for(int j=0;j<n;j++){
+            cout<<c[j]<<" ";
+        }
+        cout<<endl;
+        for(int j=0;j<2*n-1;j++){
+            cout<<d1[j]<<" ";
+        }
+        cout<<endl;
+        for(int j=0;j<2*n-1;j++){
+            cout<<d2[j]<<" ";
+        }
+        /*
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(c[j] && d1[i-j+n] && d2[i+j]){
+                    cout<<"Q"<<" ";
+                }
+                else{
+                    cout<<"_";
+                }
+            }
+            cout<<endl;
+        }*/
+        cout<<endl<<endl;
+        return;
+    }
+    for(int j=0;j<n;j++){
+        if(!c[j] && !d1[i-j+n] && !d2[i+j]){
+            c[j]=d1[i-j+n]=d2[i+j]=1;
+            nQueenBit(matrix,i+1,n,ans);
+            c[j]=d1[i-j+n]=d2[i+j]=0;   
+        }
+    }
+}
+
+int main() {
+    int matrix[10][10]={0};
+    //solveNQueen(matrix,0,4);
+    nQueenBit(matrix,0,4,ans);
+    cout<<ans<<endl;//total number of valid configrations
+    return 0;
+}
