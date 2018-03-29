@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+int ans=1;
+//since we are using backtracking so it gonna take exponential time
+//Path exist from 0,0 to n*n
+void isPathPossible(int arr[][3],int x,int y,int n,int path[][3],int &ans){
+    if(x<0 || y<0 || x>n-1 || y>n-1){
+        return;// false;
+    }
+    if(x==n-1 && y==n-1){
+        path[x][y]=1;//also make this path as 1 since the final point has also to be visited
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                cout<<path[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+        ans++;
+        return;//false;
+    }
+    if(arr[x][y]==0 || path[x][y]==1){//implies we have reached dead end or we have already went via that part
+        return;// false;
+    }
+    
+    path[x][y]=1;
+    isPathPossible(arr,x+1,y,n,path,ans);
+    isPathPossible(arr,x-1,y,n,path,ans);  
+    isPathPossible(arr,x,y+1,n,path,ans);    
+    isPathPossible(arr,x,y-1,n,path,ans);
+    path[x][y]=0;//so that other paths can be explored too
+    
+    return;//false;
+}
+
+void isPathPossible(int arr[][3],int n){
+    int path[3][3]={0};  
+    isPathPossible(arr,0,0,n,path,ans);//x and y are current points , we have taken an N*N grid both are currently 0
+}
+
+int main() {
+    int arr[][3]={{1,1,0},{1,1,0},{0,1,1}};
+    /*for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<arr[i][j]<<" ";
+        }
+        cout<<endl;
+    }*/
+    isPathPossible(arr,3);
+    //cout<<ans<<endl;
+}
+
