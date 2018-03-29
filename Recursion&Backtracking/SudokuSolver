@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+bool isRowSafe(int sudoko[][10],int i,int j,int num,int n){
+    for(int j=0;j<n;j++){
+        if(sudoko[i][j]==num){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isColSafe(int sudoko[][10],int i,int j,int num,int n){
+    for(int i=0;i<n;i++){
+        if(sudoko[i][j]==num){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isBoxSafe(int sudoko[][10],int i,int j,int num,int n){
+    int row=i-i%2;//since we have 4*4 matrix,so we will consider 2
+    int col=j-j%2;
+    for(int i=row;i<row+2;i++){
+        for(int j=col;j<col+2;j++){
+            if(sudoko[i][j]==num){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool isSafe(int sudoko[][10],int i,int j,int num,int n){
+    //isSafe is to tell if there are any clashes or not for a particular number at a particular position
+    if(!isRowSafe(sudoko,i,j,num,n)){
+        return false;
+    }else if(!isColSafe(sudoko,i,j,num,n)){
+        return false;
+    }else if(!isBoxSafe(sudoko,i,j,num,n)){
+        return false;
+    }
+    return true;
+}
+
+bool solveSudoko(int sudoko[][10],int n){
+    int row=-1;
+    int col=-1;
+    bool empty=false;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(sudoko[i][j]==0){
+                empty=true;
+                row=i;
+                col=j;
+                break;
+            }
+            if(empty){
+                break;
+            }
+        }
+    }
+    if(!empty){
+        return true;//implies not a single element in the sudoko is 0 i.e we have solved it 
+    }
+    
+    for(int num=1;num<=n;num++){
+        if(isSafe(sudoko,row,col,num,n)){
+            sudoko[row][col]=num;
+            if(solveSudoko(sudoko,n)){//if we are able to solve sudoko with current config?
+                return true;//we are done as we can solve 
+            }
+            sudoko[row][col]=0;//if not then valid config then reset the current position as 0 and try for next position
+        }
+    }
+    return false;//hum koi aur number nahi place kar pa rhe hai
+}
+
+int main() {
+    int sudoko[10][10]={{1,0,2,4},{0,0,3,1},{3,4,0,2},{0,0,4,0}};
+    solveSudoko(sudoko,4);
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            cout<<sudoko[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
