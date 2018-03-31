@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+int ans=0,DONE=0;
+void solve(int rowMask,int ld,int rd){
+    if(DONE==rowMask){
+       ans++;return;
+    }
+  //  cout<<DONE&(~(rowMask|ld|rd))<<endl;
+    int safe=DONE&~(rowMask|ld|rd);//safe gives the safe positions eg. if 01110 is the rowMask here then 10001 is the safe positions mask
+   // cout<<safe<<endl;
+    //till we dont get all rows full i.e till there is no scope for filling rows
+    while(safe){
+        int p=safe&(-safe);
+        safe=safe-p;
+        solve(rowMask|p,(ld|p)<<1,(rd|p)>>1);//if p is 00100 the p>>1 is 00010 and p<<1 is 01000
+    }
+  //  return;//it means we have exhausted all possibilites of a row then we return
+}
+
+int main() {
+    int n;cin>>n;DONE=(1<<n)-1;
+    solve(0,0,0);
+    cout<<ans;
+}
+
