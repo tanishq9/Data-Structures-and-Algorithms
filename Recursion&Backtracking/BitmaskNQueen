@@ -10,10 +10,12 @@ void solve(int rowMask,int ld,int rd){
    // cout<<safe<<endl;
     //till we dont get all rows full i.e till there is no scope for filling rows
     while(safe){
-        int p=safe&(-safe);
+        int p=safe&(-safe);//p extracts the last setbit of number safe and we check by keeping the queen on that position and check if a valid 				     config is possible or not
         safe=safe-p;
         solve(rowMask|p,(ld|p)<<1,(rd|p)>>1);//if p is 00100 the p>>1 is 00010 and p<<1 is 01000
     }
+	//basically we have to block the further diagonals as well
+//(ld|p)<<1 se left diagonal ko hum block kar rhe hai eg. if p=00Q00 then in the next row, 01110 is the blocked mask i.e 3 postion are blocked and the safe mask is 10001 ,i.e we only check for positions where we can successfully place it 
   //  return;//it means we have exhausted all possibilites of a row then we return
 }
 

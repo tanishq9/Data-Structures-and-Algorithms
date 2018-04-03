@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+#define INT_MAX 9999999
+int n=4;
+//Adj Matrix which defines the graph
+int dist[10][10]={
+    {0,20,42,25},
+    {20,0,30,24},
+    {42,30,0,10},
+    {25,34,10,0}
+};
+
+//If all cities have been visited
+int visited_all=(1<<n)-1;//1111 for 4 cities (mask on completion)
+
+int dp[16][4]={0};//this dp array will represent every position of the DP array
+//recursive approach:O(N-1!) which is not that much optimised as compared to brute so we will have to apply DP to optimise the solution
+
+int travellingSalesman(int mask,int pos){//2D DP can be judged from the parameters as well dp[mask][pos]
+    //base case
+    if(mask==visited_all){
+        return dist[pos][0];
+    }
+    //lookup
+    if(dp[mask][pos]!=-1){
+        return dp[mask][pos];
+    }
+    int ans=INT_MAX;
+    for(int city=0;city<n;city++){
+        //try to go to an unvisited city
+        if((mask&(1<<city))==0){//check if the node is visited or not
+            //this implies city has not been visited
+            int newAns=dist[pos][city]+travellingSalesman(mask|(1<<city),city);//city is the index of that city on which we are going 
+            dp[pos][city]=newAns;
+            ans=min(newAns,ans);
+        }
+    }
+    return dp[mask][pos]=ans;
+}
+
+int main() {
+    for(int i=0;i<(1<<n);i++){
+        for(int j=0;j<n;j++){
+            dp[i][j]=-1;
+        }
+    }
+    cout<<travellingSalesman(1,0)<<endl;
+    return 0;
+}
+
+

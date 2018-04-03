@@ -18,6 +18,23 @@ int minCoinsRecur(int *coins,int num,int amount){
     return val+1;
     
 }
+//recursion + memoisation
+int coinChange(int *coins,int n,int amount,int *dp){
+    if(amount<=0){
+        return 0;
+    }
+    if(dp[amount]!=0){
+        return dp[amount];
+    }
+    int ans=INT_MAX;
+    for(int i=0;i<n;i++){
+        if((amount-coins[i])>=0){
+            dp[amount-coins[i]]=coinChange(coins,n,amount-coins[i],dp);
+            ans=min(ans,dp[amount-coins[i]]);
+        }
+    }
+    return ans+1;
+}
 
 //min coins needed by DP
 void minCoins(int *coins,int num,int amount){//num is the number of coins
