@@ -1,0 +1,45 @@
+/*#include <iostream>
+#include <vector>
+#include <limits>
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ll arr[1000];
+ll dp[1000][1000];
+ll sumodulo(ll *mixture,ll start,ll endo){
+    ll sum=0;
+    for(ll i=start;i<=endo;i++){
+        sum+=mixture[i];
+        sum%=100;
+    }
+    return sum;
+}
+//we want to break the expression at every possible stage
+ll f(ll *mixture,ll i,ll j){
+    if(i>=j){
+        return 0;
+    }
+    //use the answer if it is already computed
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    dp[i][j]=INT_MAX;
+    for(int k=i;k<=j;k++){
+        dp[i][j]=min( dp[i][j], f(mixture,i,k)+f(mixture,k+1,j)+sumodulo(mixture,i,k)*sumodulo(mixture,k+1,j));
+    }
+    return dp[i][j];
+}
+
+int main(){
+    ll num_of_mixutres;
+    cin>>num_of_mixutres;
+    ll arr[num_of_mixutres];
+    for(ll i=0;i<num_of_mixutres;i++){
+        cin>>arr[i];
+    }
+    memset(dp,-1,sizeof(dp));
+    cout<<f(arr,0,num_of_mixutres-1);
+    return 0;
+}
+

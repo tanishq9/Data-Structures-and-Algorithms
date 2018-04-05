@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+#define MOD 1000000007
+int dp[1001][1001]={0};
+
+int ways(int row,int col){
+    if(dp[row-1][col-1]==-1){
+        return 0;
+    }
+    //otherwise compute the number of ways
+    //for the first row
+    for(int j=0;j<col;j++){
+        if(dp[0][j]==-1){
+            break;
+        }
+        else{
+            dp[0][j]=1;
+        }
+    }
+    //for the first column
+    for(int j=0;j<row;j++){
+        if(dp[j][0]==-1){
+            break;
+        }
+        else{
+            dp[j][0]=1;
+        }
+    }
+    for(int i=0;i<4;i++){
+        for(int j=0;j<3;j++){
+            cout<<dp[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    //bottom up approach for the rest of the matrix
+    for(int i=1;i<row;i++){
+        for(int j=1;j<col;j++){
+            //if cell is blocked leave it
+            if(dp[i][j]==-1){
+                continue;
+            }
+            dp[i][j]=0;
+            //By using property of mod
+
+            //can we come from the left?
+            if(dp[i][j-1]!=-1){
+                dp[i][j]=dp[i][j]+dp[i][j-1]%MOD;
+            }
+            //can we come from the top?
+            if(dp[i-1][j]!=-1){
+                dp[i][j]=(dp[i][j]+dp[i-1][j])%MOD;
+            }
+        }
+    }
+    for(int i=0;i<4;i++){
+        for(int j=0;j<3;j++){
+            cout<<dp[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    if(dp[row-1][col-1]==-1){
+        return 0;
+    }
+    return dp[row-1][col-1];
+}
+
+int main() {
+    int m,n,t,row,col;
+    cin>>m>>n;//m*n matrix
+    cin>>t;
+    while(t--){
+        cin>>row>>col;
+        dp[row-1][col-1]=-1;//indexing is done from 0
+    }
+    cout<<ways(m,n)<<endl;
+    return 0;
+}
+

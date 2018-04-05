@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+#define ll long long int
+using namespace std;
+
+
+//3D DP - K ordered LCS HackerEarth
+ll n=0,m=0,k,a[2005],b[2005];
+ll dp[2005][2005][8];
+
+//This is brute force + memoisation
+
+ll f(ll i,ll j,ll k){
+    if(i==n || j==m){
+        //implies the string is already finished
+        return 0;
+    }
+    //if the current state has already been computed
+    if(dp[i][j][k]!=-1){
+        return dp[i][j][k];
+    }
+    ll res=0;   
+    if(a[i]==b[j]){
+        res=max(res,1+f(i+1,j+1,k));//since 2 char are matching we can call on the remaining part for lcs
+    }else{
+        if(k>0){
+            //we have converted ith char of first string to match with jth character of second string
+            res=max(res,1+f(i+1,j+1,k-1));
+        }
+        res=max(res,f(i,j+1,k));//if we leave the char from first string
+        res=max(res,f(i+1,j,k));//if we leave the char from second string
+    }
+    return dp[i][j][k]=res;
+}
+
+
+int main() {
+    cin>>m>>n>>k;
+    memset(dp,-1,sizeof(dp));
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    for(int i=0;i<m;i++){
+        cin>>b[i];
+    }
+    cout<<f(0,0,k)<<endl;
+}
+

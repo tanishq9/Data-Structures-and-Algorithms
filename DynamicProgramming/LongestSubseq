@@ -33,3 +33,41 @@ int main() {
     cout<<lcs(s1,s2);
 }
 
+
+//OR 
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int arr[10][10]={0};
+
+void LCS(char *one,char *two,int onelen,int twolen){
+    for(int i=1;i<=onelen;i++){
+        for(int j=1;j<=twolen;j++){
+            if(one[i-1]==two[j-1]){
+                arr[i][j]=arr[i-1][j-1]+1;
+            }else{
+                arr[i][j]=max(arr[i-1][j],arr[i][j-1]);
+            }
+        }
+    }    
+    for(int i=0;i<=onelen;i++){
+        for(int j=0;j<=twolen;j++){
+            cout<<arr[i][j]<<" ";
+        }
+        cout<<endl;
+    }    
+    
+    cout<<arr[onelen][twolen]<<endl;
+}
+
+int main() {
+    char one[10];
+    char two[10];
+    cin>>one>>two;
+    LCS(one,two,strlen(one),strlen(two));
+    return 0;
+}
+
+
