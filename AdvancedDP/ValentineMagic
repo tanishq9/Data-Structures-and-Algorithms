@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ll dp[5005][5005];
+
+ll minDiff(vector<ll> boy,vector<ll> girl,ll boystart,ll girlstart){
+    if(boystart==(signed)boy.size()){
+        return 0;//we have paired all the boys
+    }
+    if(girlstart==(signed)girl.size()){
+        return INT_MAX;//we have paired all the girls
+    }
+    if(dp[boystart][girlstart]!=-1){
+        return dp[boystart][girlstart];
+    }
+    ll include=abs(boy.at(boystart)-girl.at(girlstart))+minDiff(boy,girl,boystart+1,girlstart+1);//we include the boy , boy is paired
+    ll exclude=minDiff(boy,girl,boystart,girlstart+1);//we exclude the boy , boy is paired later
+    ll ans=min(include,exclude);
+    return dp[boystart][girlstart]=ans;
+}
+
+int main(){
+    ll num_boy,num_girl;
+    cin>>num_boy>>num_girl;
+    vector<ll> boy(num_boy);
+    vector<ll> girl(num_girl);
+    for(ll i=0;i<num_boy;i++){
+        cin>>boy.at(i);
+    }
+    for(ll i=0;i<num_girl;i++){
+        cin>>girl.at(i);
+    }
+    sort(boy.begin(),boy.end());
+    sort(girl.begin(),girl.end());
+    memset(dp,-1,sizeof(dp));
+    cout<<minDiff(boy,girl,0,0);
+    return 0;
+}
+

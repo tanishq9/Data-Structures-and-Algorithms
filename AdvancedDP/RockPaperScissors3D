@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+double dp[101][101][101];
+//probabality for rock
+void setup(double dp[101][101][101]){
+    for(int i=0;i<101;i++){
+        for(int j=0;j<101;j++){
+            for(int z=0;z<101;z++){
+                dp[i][j][z]=-1.0;
+            }
+        }
+    }
+
+}
+//func tells probability if rock won
+double func(int rock,int paper,int scissors){
+    //implies paper lost
+    if(rock==0 || scissors==0){
+        return 0.0;
+    }
+    //implies rock won
+    if(paper==0){
+        return 1.0;
+    }
+    if(dp[rock][paper][scissors]!=-1.0){
+        return dp[rock][paper][scissors];
+    }
+    double ret=0.0;
+    double total=rock*paper+paper*scissors+scissors*rock;
+    ret += func(rock-1,paper,scissors)*((double)(rock*paper)/total);//if rock lose
+    ret += func(rock,paper-1,scissors)*((double)(scissors*paper)/total);//if paper lose
+    ret += func(rock,paper,scissors-1)*((double)(scissors*rock)/total);//if scissors lose
+    return dp[rock][paper][scissors]=ret;
+}
+
+int main() {
+    int rock,paper,scissors;
+    cin>>rock>>paper>>scissors;
+    setup(dp);
+    cout<<func(rock,paper,scissors)<<endl;
+    return 0;
+}
+
