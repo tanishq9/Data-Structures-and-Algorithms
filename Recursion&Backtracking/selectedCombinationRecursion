@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int sum=0;
+int ans=INT_MAX;
+void combinationsK(int *arr,int *final,int n,int k,int index,int i){
+    if(index==k){
+        for(int i=0;i<k;i++){
+            sum+=final[i];
+        }
+        ans=min(ans,sum);
+      //  cout<<sum<<endl;
+        sum=0;
+        return;
+    }
+    //if no more elements can be added in final array
+    if(i>=n){
+        return;
+    }
+    final[index]=arr[i];
+    //current char included
+    combinationsK(arr,final,n,k,index+1,i+1);
+    //if current char is not included
+    combinationsK(arr,final,n,k,index,i+1);
+}
+
+int main() {
+    int arr[]={1,2,3,4,5};
+    int final[10]={0};
+    int k=3,n=5;//n is the size of array
+    combinationsK(arr,final,n,k,0,0);
+    cout<<ans;
+    return 0;
+}
+
