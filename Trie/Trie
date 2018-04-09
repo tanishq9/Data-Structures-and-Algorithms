@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+#define hashmap unordered_map<char,node*>
+using namespace std;
+
+//used for searching a word in o(n) time where n is the length of the word ,better than brute force one here it takes 0(m*n) in worst case ,  where m is the length of word and n is the total number of words
+
+class node{
+    public:
+        char data;
+        hashmap h;
+        bool isterminal;
+        
+        node(char d){
+            data=d;
+            isterminal=false;
+        }
+};
+
+class Trie{
+    node *root;
+    public:
+        Trie(){
+            root=new node('\0');
+        }
+        //insertion
+        //temp-> is equivalent to (*temp).
+        void addWord(char *word){
+            node *temp=root;
+            for(int i=0;word[i]!='\0';i++){
+                char ch=word[i];
+                if(temp->h.count(ch)==0){//temp does not contain that node
+                    //so will insert a new key in the hashmap of that node and make temp point to that node
+                    node *child=new node(ch);
+                    temp->h[ch]=child;
+                    temp=child;
+                }
+                else{
+                    temp=temp->h[ch];
+                }
+            }
+            temp->isterminal=true;
+        }        
+        //lookup (search in Trie)
+        bool search(char *word){
+            node *temp=root;
+            for(int i=0;word[i]!='\0';i++){
+                char ch=word[i];
+                if(temp->h.count(ch)==0){
+                    return false;
+                }else{
+                temp=temp->h[ch];
+                }
+            }
+            /*if(temp->isterminal==true){
+                return true;
+            }
+            return false;*/
+            return temp->isterminal;
+        }
+};
+
+int main() {
+    Trie t;
+    char word[10][100]={"apple","ape","news","coder","not"};
+    for(int i=0;i<5;i++){
+        t.addWord(word[i]);
+    }
+    char searchword[100];//char array is used to store word
+    cin.getline(searchword,100);
+    if(t.search(searchword)){
+        cout<<"present"<<endl;
+    }else{
+        cout<<"not present"<<endl;
+    }
+}
+
