@@ -1,0 +1,98 @@
+#include <iostream>
+#include <map>
+#include <list>
+#include <queue>
+using namespace std;
+
+class Graph{
+    map<int,list<int> > myMap;
+    public:
+        void addEdge(int parent,int child,bool bldr=false){
+            myMap[parent].push_back(child);
+            if(bldr)
+                myMap[child].push_back(parent);
+        }
+    
+        void print(){
+            for(pair<int,list<int> > pair:myMap){
+                cout<<pair.first<<"->";
+                for(int child:myMap[pair.first]){
+                    cout<<child<<",";
+                }
+                cout<<"END"<<endl;
+            }
+        }
+        
+                //DFS APPROACH
+         void topohelper(int current,map<int,bool> &visited,list<int> &ordering){
+            visited[current]=true;//mark the current node as visited
+            for(int child:myMap[current]){
+                if(!visited[child]){
+                    topohelper(child,visited,ordering);
+                }
+            }
+            //while returning from a node just add it into the linear ordering list
+            //at this point all the children of current node have been visited
+            ordering.push_front(current);
+        }
+        
+        void topological(){
+            map<int,bool> visited;
+            list<int> ordering;
+            topohelper(1,visited,ordering);
+            for(int i:ordering){
+                cout<<i<<" ";
+            }
+            cout<<"END"<<endl;
+        }
+        
+                //BFS APPROACH
+        void bfstopological(){
+            map<int,int> indegree;
+            //inital indegree with 0 
+            for(pair<int,list<int> > node:myMap){
+                indegree[node.first]=0;    
+            }
+            
+            //initialize the indegree
+            for(pair<int,list<int> > node:myMap){
+                for(int child:myMap[node.first]){//child is a list
+                    indegree[child]++;
+                }
+            }
+            //find out all nodes with 0 indegree
+            queue<int> myQ;
+            for(pair<int,list<int> > node:myMap){
+                if(indegree[node.first]==0){
+                    myQ.push(node.first);
+                }
+            }
+            //push the node with 0 indegree in myQ
+            while(!myQ.empty()){
+                int current=myQ.front();
+                myQ.pop();
+                cout<<current<<" ";
+                for(pair<int,list<int> > node:myMap){
+                    for(int child:myMap[node.first]){
+                        indegree[child]--;
+                        if(indegree[child]==0){
+                            myQ.push(child);
+                        }
+                    }
+                }
+            }
+        }
+};
+
+int main() {
+    Graph g; 
+    //Directed Graph
+    g.addEdge(1,2);
+    g.addEdge(1,3);
+    g.addEdge(2,4);
+    g.addEdge(3,4);
+    g.print();
+    //g.topological();
+    g.bfstopological();
+}
+

@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+class disjoint{
+
+    int N;
+    int *my;
+    
+  public:
+        void initialize(int *arr,int n){
+            N=n;
+            my=arr;
+            for(int i=0;i<n;i++){
+                arr[i]=i;
+            }
+        }
+        
+        //returns true if A and B are connected ,else returns false otherwise
+        bool find(int a,int b){
+            if(my[a]==my[b]){
+                return true;
+            }else{
+                return false;
+            }  
+        }
+        
+        //change all entries from arr[a] to arr[b]
+        void uni(int a,int b){
+            int temp=my[a];
+            for(int i=0;i<N;i++){
+                if(my[i]==temp){
+                    my[i]=my[b];
+                }
+            }
+        }
+        void print(){
+            for(int i=0;i<N;i++){
+                cout<<my[i]<<" ";
+            }
+            cout<<endl;
+        }
+};
+
+//Disjoint data structure
+int main() {
+    int arr[]={0,1,2,3,4,5,6,7,8,9};
+    int n=sizeof(arr)/sizeof(int);
+    disjoint d;
+    d.initialize(arr,n);
+    d.print();
+    d.uni(3,4);
+    d.print();
+    cout<<d.find(3,4)<<endl;
+    return 0;
+}
+
