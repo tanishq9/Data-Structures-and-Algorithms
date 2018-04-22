@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+#include <set>
+#include <list>
+#include <map>
+using namespace std;
+class Graph{
+    map<int,list<pair<int,int> > > myMap;
+    public:
+        void addEdge(int parent,int child,int weight,bool bldr=true){
+            myMap[parent].push_back(make_pair(child,weight));
+            if(bldr){
+                myMap[child].push_back(make_pair(parent,weight));
+            }
+        }
+        void print(){
+            for(pair<int,list<pair<int,int> > > entry:myMap){
+                cout<<entry.first<<"->";
+                for(pair<int,int> nghbr:myMap[entry.first]){
+                    cout<<"("<<nghbr.first<<","<<nghbr.second<<")"<<" | ";
+                }
+                cout<<endl;
+            }
+        }
+        void dijkstra(int src){
+            map<int,int> dist;
+            for(auto entry:myMap){
+                dist[entry.first]=INT_MAX;
+            }
+            //initialize
+            dist[src]=0;
+            set<pair<int,int> > s;
+            for(auto entry:myMap){
+                s.insert(make_pair(INT_MAX,entry.first));
+            }
+            s.insert(make_pair(0,src));
+
+            while(!s.empty()){
+                auto min=*(s.begin());
+                int node=min.second;
+                int nodeDist=min.first;
+                s.erase(s.begin());
+                for(pair<int,int> nghr:myMap[node]){
+                    auto findptr=s.find(make_pair(dist[nghr.first],nghr.first));
+                    if(findptr==s.end()){
+                        continue;
+                    }
+                    else if(findptr!=s.end()){
+                        if(dist[nghr.first]>nodeDist+nghr.second){
+                            s.erase(findptr);
+                            dist[nghr.first]=nodeDist+nghr.second;//update the dist map
+                            s.insert(make_pair(dist[nghr.first],nghr.first));//update the extract min data structure
+                        }
+                    }
+                }
+            }
+
+            //print dist from src for all nodes
+            for(auto d:dist){
+                cout<<d.first<<" is located at "<<d.second<<" from "<<src<<endl;
+            }
+
+        }
+
+};
+int main() {
+    Graph gr;
+    gr.addEdge(1,3,4);
+    gr.addEdge(1,2,1);
+    gr.addEdge(2,3,1);
+    gr.addEdge(4,3,2);
+    gr.addEdge(1,4,7);
+    gr.print();
+    gr.dijkstra(1);
+}
+
+

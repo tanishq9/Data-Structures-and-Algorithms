@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+#include <map>
+#include <list>
+#include <set>
+using namespace std;
+
+class Graph{
+    map<int,list<pair<int,int> > > myMap; //adjancy list method
+    public:
+        void addEdge(int parent,int child,int dist,bool bldr=true){
+            myMap[parent].push_back(make_pair(child,dist));
+            if(bldr){
+                myMap[child].push_back(make_pair(parent,dist));
+            }
+        }
+
+        void print(){
+            for(pair<int,list<pair<int,int> > > entry:myMap){
+                cout<<entry.first<<"->";
+                for(pair<int,int> single:myMap[entry.first]){
+                    cout<<single.first<<","<<single.second<<" | ";
+                }
+                cout<<"END"<<endl;
+            }
+        }
+
+        void dijkistra(int src){
+            map<int,int> dist;
+            for(pair<int,list<pair<int,int> > > entry:myMap){
+                dist[entry.first]=INT_MAX;
+            }
+            dist[src]=0;
+            set<pair<int,int> > s;//first parm of set is distance and in set , the sorting is done on basis of first element
+            s.insert(make_pair(0,src));
+            while(!s.empty()){
+                auto ptr= *(s.begin());
+                int node=ptr.second;
+                int nodeDist=ptr.first;
+                s.erase(s.begin());
+                //once a node is erased it implies thst node was finalised node i.e its dist from src node was minimised
+                for(auto child:myMap[node]){
+                    if(dist[child.first]>nodeDist+child.second){
+//eg. 1(parent) iske child hoge 2,3,4 and they are stored as 1->(2,1),(3,4),(4,7)
+                        int destinationNode=child.first;
+                        //remove the earlier node
+                        auto f=s.find(make_pair(dist[destinationNode],destinationNode));
+                        if(f!=s.end()){
+                            s.erase(f);
+                        }
+                        //insert the new pair
+                        dist[child.first]=nodeDist+child.second;
+                        s.insert(make_pair(dist[destinationNode],destinationNode));
+                    }
+                }
+
+            }
+
+            //print dist from src for all nodes
+            for(auto d:dist){
+                cout<<d.first<<" is located at "<<d.second<<" from "<<src<<endl;
+            }
+        }
+
+};
+
+int main() {
+    Graph gr;
+    gr.addEdge(1,3,4);
+    gr.addEdge(1,2,1);
+    gr.addEdge(2,3,1);
+    gr.addEdge(4,3,2);
+    gr.addEdge(1,4,7);
+    gr.print();
+    gr.dijkistra(1);
+}
+
