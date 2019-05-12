@@ -22,6 +22,10 @@ public class Basics {
 		System.out.println(l2 + " " + l2.size());
 		System.out.println(l3 + " " + l3.size());
 
+		String str = "909";
+		int offset = Integer.valueOf(str.substring(0, 2));
+		System.out.println(offset);
+
 	}
 
 	public static void params(ArrayList<Integer> p) {

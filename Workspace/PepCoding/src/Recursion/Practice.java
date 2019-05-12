@@ -75,5 +75,8 @@ public class Practice {
 		printSubset(arr, target, idx + 1, asf);
 		printSubset(arr, target - arr[idx], idx + 1, asf + arr[idx]);
 	}
+	
+	
+	
 
 }

@@ -8,9 +8,9 @@ public class mazePath {
 		int dr = 2, dc = 2;
 		ArrayList<String> paths = getMazePath(0, 0, dr, dc);
 		for (String path : paths) {
-			// System.out.println(path);
+			System.out.println(path);
 		}
-		// System.out.println(paths.size());
+		System.out.println(paths.size());
 		ArrayList<String> paths2 = getMultiMove(0, 0, dr, dc);
 		for (String path : paths2) {
 			System.out.println(path);

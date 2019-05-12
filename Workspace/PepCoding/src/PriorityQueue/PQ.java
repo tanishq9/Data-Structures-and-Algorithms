@@ -1,3 +1,4 @@
+
 package PriorityQueue;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class PQ {
 		ArrayList<Student> list = new ArrayList<>();
 		Student st1 = new Student("Tanishq", 100, 1);
 		pq.add(st1);
-		Student st2 = new Student("Akshit", 90, 3);
+		Student st2 = new Student("Akshit", 0, -1);
 		pq.add(st2);
 		Student st3 = new Student("Sumeet", 100, 2);
 		pq.add(st3);
