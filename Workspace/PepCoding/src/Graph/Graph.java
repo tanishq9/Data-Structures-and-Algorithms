@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class Graph {
 
@@ -1049,54 +1050,86 @@ public class Graph {
 
 	public static void apoints(ArrayList<ArrayList<Edge>> graph) {
 		ArrayList<Integer> acps = new ArrayList<>();
-		ArrayList<Integer> disc = new ArrayList<>();
-		for (int i = 0; i < graph.size(); i++) {
-			disc.add(i);
-		}
+		ArrayList<Integer> discovery = new ArrayList<>();
 		ArrayList<Integer> low = new ArrayList<>();
+		boolean[] visited = new boolean[graph.size()];
+		for (int i = 0; i < graph.size(); i++) {
+			discovery.add(0);
+		}
 		for (int i = 0; i < graph.size(); i++) {
 			low.add(Integer.MAX_VALUE);
 		}
-		boolean[] visited = new boolean[graph.size()];
-		ArrayList<Integer> parent = new ArrayList<>();
-		parent.add(-1);
-		for (int i = 1; i < graph.size(); i++) {
-			disc.add(0);
-		}
-		apbridge(graph, disc, low, visited, parent, acps, 0);
+		int src = 0;
+		int parent = -1; // Doesn't matter for the source node
+		apbridge(graph, discovery, low, visited, acps, parent, src);
 		System.out.println(acps);
 	}
 
-	public static void apbridge(ArrayList<ArrayList<Edge>> graph, ArrayList<Integer> disc, ArrayList<Integer> low,
-			boolean[] visited, ArrayList<Integer> parent, ArrayList<Integer> acps, int src) {
-		int counter = 0;
-		disc.set(src, mytime);
-		low.set(src, mytime);
+	private static void apbridge(ArrayList<ArrayList<Edge>> graph, ArrayList<Integer> discovery, ArrayList<Integer> low,
+			boolean[] visited, ArrayList<Integer> acps, int parent, int src) {
 		mytime++;
+		discovery.set(src, mytime);
+		low.set(src, mytime);
+		int counter = 0;
 		visited[src] = true;
 		for (int i = 0; i < graph.get(src).size(); i++) {
 			Edge e = graph.get(src).get(i);
 			int nbr = e.n;
-			if (parent.get(src) == nbr) {
+			if (visited[nbr] == true && nbr == parent) {
 				// Do Nothing
-			} else if (visited[nbr] = true) {
-				low.set(src, Math.min(low.get(src), disc.get(nbr)));
+			} else if (visited[nbr] == true && nbr != parent) {
+				low.set(src, Math.min(low.get(src), discovery.get(nbr)));
 			} else {
-				parent.set(nbr, src);
-				apbridge(graph, disc, low, visited, parent, acps, nbr);
-				low.set(src, Math.min(low.get(src), low.get(nbr)));
-				// Root Node
-				if (parent.get(src) == -1) {
-					counter++;
+				counter++;
+				apbridge(graph, discovery, low, visited, acps, src, nbr);
+				low.set(src, Math.min(low.get(nbr), low.get(src)));
+				if (discovery.get(src) == 1) {
 					if (counter >= 2) {
 						acps.add(src);
 					}
-				}
-				if (low.get(nbr) <= disc.get(src)) {
-					acps.add(src);
+				} else {
+					if (low.get(nbr) >= discovery.get(src)) {
+						acps.add(src);
+					}
+					if (low.get(nbr) > discovery.get(src)) {
+						System.out.println("Bridge from " + src + " to " + nbr);
+					}
 				}
 			}
 		}
+	}
+
+	// Topological Sort
+	static Stack<Integer> linearOrder = null;
+
+	public static void topologicalSort(ArrayList<ArrayList<Edge>> graph) {
+		ArrayList<Boolean> visited = new ArrayList<>();
+		for (int i = 0; i < graph.size(); i++) {
+			visited.add(false);
+		}
+		linearOrder = new Stack<>();
+		// Checking for all the components
+		for (int i = 0; i < graph.size(); i++) {
+			if (visited.get(i) == false) {
+				topologicalHelper(graph, i, visited);
+			}
+		}
+		while (!linearOrder.isEmpty()) {
+			System.out.print(linearOrder.pop() + "->");
+		}
+		System.out.println("END");
+	}
+
+	private static void topologicalHelper(ArrayList<ArrayList<Edge>> graph, int src, ArrayList<Boolean> visited) {
+		visited.set(src, true);
+		for (int i = 0; i < graph.get(src).size(); i++) {
+			Edge e = graph.get(src).get(i);
+			if (visited.get(e.n) == false) {
+				topologicalHelper(graph, e.n, visited);
+			}
+		}
+		// Add in linear order in Node Post
+		linearOrder.push(src);
 	}
 
 	public static void main(String[] args) {
@@ -1105,9 +1138,10 @@ public class Graph {
 		for (int i = 0; i < n; i++) {
 			graph.add(new ArrayList<>());
 		}
+
 		addEdge(graph, 0, 1, 10);
 		addEdge(graph, 0, 3, 40);
-		// addEdge(graph, 0, 2, 10);
+		addEdge(graph, 0, 2, 10);
 		addEdge(graph, 1, 2, 10);
 		addEdge(graph, 2, 3, 10);
 		// addEdge(graph, 2, 5, 5);
@@ -1116,8 +1150,16 @@ public class Graph {
 		addEdge(graph, 4, 6, 8);
 		addEdge(graph, 5, 6, 3);
 		display(graph);
+		apoints(graph);
+		// For TS
+		/*
+		 * addEdge(graph, 0, 1, 10); addEdge(graph, 1, 4, 10); addEdge(graph, 4, 5, 10);
+		 * addEdge(graph, 6, 5, 10); addEdge(graph, 3, 6, 10); addEdge(graph, 3, 2, 10);
+		 * addEdge(graph, 0, 2, 10); display(graph); topologicalSort(graph);
+		 */
+
 		// System.out.println(hasPath(graph, 0, 6));
-		System.out.println(hasPathGraph(graph, 0, 6));
+		// System.out.println(hasPathGraph(graph, 0, 6));
 		/*
 		 * printAllPaths(graph, 0, 6); System.out.println();
 		 * System.out.println(hasPath(graph, 0, 0)); System.out.println();
@@ -1140,38 +1182,31 @@ public class Graph {
 		 * System.out.println(); System.out.println(); bfsLW(graph, 0);
 		 * System.out.println();
 		 */
-		ArrayList<ArrayList<Integer>> res = getCC(graph);
-		System.out.println(isConnected(graph));
-		System.out.println(isCyclic(graph));
-		gccTweaked(graph);
+		/*
+		 * ArrayList<ArrayList<Integer>> res = getCC(graph);
+		 * System.out.println(isConnected(graph)); System.out.println(isCyclic(graph));
+		 * gccTweaked(graph);
+		 */
 		// System.out.println(isBipartite(graph)); // Coloring method : not working
-		System.out.println(isBi(graph)); // Class Code
-		System.out.println();
-		dijkstra(graph, 0);
-		System.out.println();
-		System.out.println(MST(graph, 0));
-		System.out.println();
-		System.out.println();
+		/*
+		 * System.out.println(isBi(graph)); // Class Code System.out.println();
+		 * dijkstra(graph, 0); System.out.println(); System.out.println(MST(graph, 0));
+		 * System.out.println(); System.out.println();
+		 */
 
-		System.out.println("Journey to the Moon : HackerEarth");
-		ArrayList<Integer> p1 = new ArrayList<>();
-		ArrayList<Integer> p2 = new ArrayList<>();
-		p1.add(1);
-		p2.add(2);
-		p1.add(1);
-		p2.add(4);
-		p1.add(3);
-		p2.add(5);
-		System.out.println(numTeams(6, p1, p2));
-		System.out.println(kruksals(graph));
-		String names = "abdecfghijklmnopqrstuv";
-		Integer[] deadlines = { 4, 2, 3, 1, 8, 3, 2, 1, 2, 6, 5, 7, 9, 2, 6, 5, 2, 7, 6, 9, 1, 6 };
-		Integer[] profitss = { 100, 67, 94, 44, 33, 77, 11, 99, 37, 76, 34, 47, 78, 44, 39, 75, 49, 33, 48, 92, 43,
-				90 };
-		ArrayList<Integer> dl = new ArrayList<>(Arrays.asList(deadlines));
-		ArrayList<Integer> profits = new ArrayList<>(Arrays.asList(profitss));
-		jobSequencing(names, dl, profits);
-		apoints(graph);
+		/*
+		 * System.out.println("Journey to the Moon : HackerEarth"); ArrayList<Integer>
+		 * p1 = new ArrayList<>(); ArrayList<Integer> p2 = new ArrayList<>(); p1.add(1);
+		 * p2.add(2); p1.add(1); p2.add(4); p1.add(3); p2.add(5);
+		 * System.out.println(numTeams(6, p1, p2)); System.out.println(kruksals(graph));
+		 * String names = "abdecfghijklmnopqrstuv"; Integer[] deadlines = { 4, 2, 3, 1,
+		 * 8, 3, 2, 1, 2, 6, 5, 7, 9, 2, 6, 5, 2, 7, 6, 9, 1, 6 }; Integer[] profitss =
+		 * { 100, 67, 94, 44, 33, 77, 11, 99, 37, 76, 34, 47, 78, 44, 39, 75, 49, 33,
+		 * 48, 92, 43, 90 }; ArrayList<Integer> dl = new
+		 * ArrayList<>(Arrays.asList(deadlines)); ArrayList<Integer> profits = new
+		 * ArrayList<>(Arrays.asList(profitss)); jobSequencing(names, dl, profits);
+		 * apoints(graph);
+		 */
 	}
 
 }

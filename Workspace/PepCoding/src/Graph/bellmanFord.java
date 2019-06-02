@@ -77,7 +77,7 @@ public class bellmanFord {
 				if (result.get(edge.u).cost != Integer.MAX_VALUE
 						&& result.get(edge.u).cost + edge.wt < result.get(edge.v).cost) {
 					isCycle = true;
-					break;
+					break;       
 				}
 			}
 		}

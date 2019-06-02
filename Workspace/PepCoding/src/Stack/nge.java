@@ -16,7 +16,6 @@ public class nge {
 				} catch (NumberFormatException ex) { // handle your exception
 					return;
 				}
-
 			}
 			long[] nge = new long[n];
 			nge[n - 1] = -1;
@@ -26,11 +25,10 @@ public class nge {
 				while (stack.size() > 0 && arr[i] > stack.peek()) {
 					stack.pop();
 				}
-				if (stack.size() > 0) {
-					nge[i] = stack.peek();
-				} else {
-					nge[i] = -1;
-				}
+				nge[i] = stack.size() > 0 ? stack.peek() : -1;
+				/*
+				 * if (stack.size() > 0) { nge[i] = stack.peek(); } else { nge[i] = -1; }
+				 */
 				stack.push(arr[i]);
 			}
 			for (int i = 0; i < n; i++) {
