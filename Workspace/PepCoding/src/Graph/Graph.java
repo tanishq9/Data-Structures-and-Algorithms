@@ -51,10 +51,6 @@ public class Graph {
 		if (src == dest) {
 			return true;
 		}
-		/*
-		 * for (int i = 0; i < graph.get(src).size(); i++) { if (graph.get(src).get(i).n
-		 * == dest) { return true; } }
-		 */
 		for (int i = 0; i < graph.get(src).size(); i++) {
 			if (!hmap.contains(graph.get(src).get(i).n)) {
 				isPresent = hasPath(graph, graph.get(src).get(i).n, dest);
@@ -605,7 +601,6 @@ public class Graph {
 	private static boolean cyclicHelper(ArrayList<ArrayList<Edge>> graph, int src, ArrayList<Boolean> visited) {
 		LinkedList<Integer> queue = new LinkedList<>();
 		queue.add(src);
-		ArrayList<Integer> component = new ArrayList<>();
 		while (!queue.isEmpty()) {
 			Integer front = queue.getFirst();
 			queue.removeFirst();
@@ -614,7 +609,6 @@ public class Graph {
 			} else {
 				visited.set(front, true);
 			}
-			component.add(front);
 			for (int i = 0; i < graph.get(front).size(); i++) {
 				int nbr = graph.get(front).get(i).n;
 				if (visited.get(nbr) == false) {
@@ -1084,6 +1078,7 @@ public class Graph {
 				apbridge(graph, discovery, low, visited, acps, src, nbr);
 				low.set(src, Math.min(low.get(nbr), low.get(src)));
 				if (discovery.get(src) == 1) {
+					System.out.println(counter);
 					if (counter >= 2) {
 						acps.add(src);
 					}
