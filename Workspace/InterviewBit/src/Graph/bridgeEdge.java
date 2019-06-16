@@ -5,6 +5,11 @@ import java.util.ArrayList;
 // For edge uv that is removed, check if by calling dfs on u , if v is reachable
 // or not , if reachable then the edge was not a bridge edge
 public class bridgeEdge {
+	
+	// Check for Eulerian Path
+    // Eulerian is in terms of edges
+	// In head to tail ordering
+	
 	class Graph {
 		int v; // Number of vertices
 		int e; // Number of edges

@@ -168,9 +168,7 @@ public class getCommonElements {
 			int currentLength = 1;
 			list = new ArrayList<>();
 			list.add(currentElement);
-			while (hmap.containsKey(
-
-					currentElement + 1)) {
+			while (hmap.containsKey(currentElement + 1)) {
 				list.add(currentElement + 1);
 				currentLength += 1;
 				currentElement += 1;
