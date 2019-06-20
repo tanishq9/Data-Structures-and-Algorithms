@@ -1,9 +1,8 @@
-package Graph;
+package LinkedList;
 
 import java.util.HashMap;
 
-public class cloneLLUsingHashMap {
-
+public class cloneLLusingHashMap {
 	class Node {
 		int data;
 		Node next, arb;
