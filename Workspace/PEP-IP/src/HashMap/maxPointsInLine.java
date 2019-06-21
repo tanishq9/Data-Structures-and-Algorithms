@@ -79,3 +79,66 @@ class GfG {
 		return max;
 	}
 }
+
+class Solution {
+	public int maxPoints(int[][] points) {
+		HashMap<Pair, Integer> map = new HashMap<>();
+		int max = 0;
+		int n = points.length;
+		for (int i = 0; i < n; i++) {
+			int duplicate = 0;
+			int local = 0;
+			for (int j = i + 1; j < n; j++) {
+				int dx = points[i][0] - points[j][0];
+				int dy = points[i][1] - points[j][1];
+				if (dx == 0 && dy == 0) {
+					duplicate++;
+					continue;
+				}
+				int r = gcd(dx, dy);
+				dx = dx / r;
+				dy = dy / r;
+				Pair curr = new Pair(dx, dy);
+				if (map.containsKey(curr)) {
+					map.put(curr, map.get(curr) + 1);
+				} else {
+					map.put(curr, 1);
+				}
+				local = Math.max(local, map.get(curr));
+			}
+			max = Math.max(max, local + duplicate + 1);
+			map.clear();
+		}
+		return max;
+	}
+
+	public int gcd(int a, int b) {
+		if (b == 0)
+			return a;
+		return gcd(b, a % b);
+	}
+
+	class Pair {
+		int dx;
+		int dy;
+
+		Pair(int idx, int idy) {
+			this.dx = idx;
+			this.dy = idy;
+		}
+
+		public int hashCode() {
+			return dx + dy;
+		}
+
+		public boolean equals(Object o) {
+			Pair other = (Pair) o;
+			if (this.dx == other.dx && this.dy == other.dy) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+}
