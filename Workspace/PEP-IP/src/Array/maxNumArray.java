@@ -10,7 +10,7 @@ public class maxNumArray {
 		String s1 = "95";
 		String s2 = "59";
 		for (int i = 0; i < s1.length(); i++) {
-			System.out.println((int)s1.charAt(i)-(int)s2.charAt(i));
+			System.out.println((int) s1.charAt(i) - (int) s2.charAt(i));
 		}
 		System.out.println(s1.compareTo(s2));
 		Scanner sc = new Scanner(System.in);
