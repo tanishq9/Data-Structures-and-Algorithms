@@ -24,7 +24,7 @@ public class KPairsWithSmallestSums {
 
 	public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
-		// 0(n*logn) ; n is the length of the smaller array among them
+		// 0(n*log(n)) ; n is the length of the smaller array among them
 		for (int i = 0; i < nums2.length; i++) {
 			pq.add(new Pair(0, i, nums1[0] + nums2[i]));
 		}
