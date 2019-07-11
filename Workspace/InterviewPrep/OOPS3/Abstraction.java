@@ -64,6 +64,10 @@ class Rectangle extends Shape {
 		return "My color is " + super.color;
 	}
 
+	public void thisClassOwnMethod() {
+
+	}
+
 }
 
 public class Abstraction {
