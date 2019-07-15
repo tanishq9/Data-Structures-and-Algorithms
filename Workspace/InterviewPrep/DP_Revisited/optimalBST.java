@@ -22,11 +22,10 @@ public class optimalBST {
 			pairs[i] = new Pair(val[i], freq[i]);
 		}
 		// Sort on basis of value
-		Arrays.sort(pairs, new Comparator<Pair>() {
-			public int compare(Pair one, Pair two) {
-				return one.v - two.v;
-			}
-		});
+		/*
+		 * Arrays.sort(pairs, new Comparator<Pair>() { public int compare(Pair one, Pair
+		 * two) { return one.v - two.v; } });
+		 */
 		// Compute the prefix sum of frequencies
 		int[] prefixSumFreq = new int[freq.length];
 		prefixSumFreq[0] = pairs[0].f;
@@ -69,8 +68,8 @@ public class optimalBST {
 		// {34, 8, 50} : value
 		// { 1, 4, 5, 2, 8, 7, 6 } : keys
 		// { 4, 1, 3, 10, 5, 6, 2 } : value
-		int[] val = { 10, 12, 20 };
-		int[] freq = { 34, 8, 50 };
+		int[] val = { 94, 60, 74, 10, 99 };
+		int[] freq = { 36, 20, 52, 95, 60 };
 		System.out.println(optimalCost(val, freq));
 	}
 
