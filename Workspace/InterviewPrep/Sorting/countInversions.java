@@ -9,9 +9,10 @@ public class countInversions {
 		int inv_count = 0;
 		int[] temp = new int[hi - lo + 1];
 		while (i <= mid && j <= hi) {
-			if (arr[i] < arr[j]) {
+			if (arr[i] <= arr[j]) {
 				temp[k++] = arr[i++];
 			} else {
+				inv_count += (mid - i + 1);
 				temp[k++] = arr[j++];
 			}
 		}

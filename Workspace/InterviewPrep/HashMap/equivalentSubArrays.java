@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class equivalentSubArrays {
+	// You need to find count of subarrays that have the same number of distinct
+	// elements as the main array
 	public static int val(int[] arr) {
 		HashMap<Integer, Integer> map = new HashMap<>();
 		for (int i = 0; i < arr.length; i++) {
