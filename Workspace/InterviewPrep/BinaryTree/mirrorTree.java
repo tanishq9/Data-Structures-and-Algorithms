@@ -1,5 +1,7 @@
 package BinaryTree;
 
+import BinaryTree.levelOrderCountApproachInLove.TreeNode;
+
 public class mirrorTree {
 	public static void mirror(TreeNode node) {
 		// write your code here.
