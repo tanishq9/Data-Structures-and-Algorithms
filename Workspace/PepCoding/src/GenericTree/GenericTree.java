@@ -121,7 +121,7 @@ public class GenericTree {
 		ArrayList<Integer> path1 = path(root, d1);
 		ArrayList<Integer> path2 = path(root, d2);
 		ArrayList<Integer> pathLCA = path(root, lca(root, d1, d2));
-		return path1.size() + path2.size() - 2 * pathLCA.size() + 1;
+		return path1.size() + path2.size() - 2 * pathLCA.size() + 1; // +1 is form lca which was subtracted twice
 	}
 
 	public void mirror(Node root) {
@@ -484,6 +484,7 @@ public class GenericTree {
 		}
 	}
 
+	// DO
 	public void euler(Node root) {
 		LinkedList<EHelper> stack = new LinkedList<>();
 		stack.addFirst(new EHelper(root, 0));
@@ -511,8 +512,6 @@ public class GenericTree {
 
 	String[] keypad = { "", "abc", "def", "ghi", "jk", "lmno" };
 
-	
-	
 	// KPC using DFS and BFS iteratively and not recursively
 	public void kpc(String code) {
 		// BFS using queue
