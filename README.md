@@ -1,6 +1,6 @@
 ## Data Structures and Algorithms
 
-### Data Strucuture Foundation :
+### Data Strucutures Foundation :
 ##### <li>https://github.com/tanishq9/Data-Structures-and-Algorithms/tree/master/Workspace/PEP-Foundation</li>
 
 ### Leetcode solutions : 
