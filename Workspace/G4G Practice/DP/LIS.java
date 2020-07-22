@@ -1,36 +1,42 @@
-/*package whatever //do not write package name here */
+package DynamicProgramming;
 
-import java.util.*;
-import java.lang.*;
-import java.io.*;
+public class LIS {
 
-class GFG {
-	public static void main (String[] args) {
-		Scanner sc=new Scanner(System.in);
-		int t=sc.nextInt();
-		while(t!=0){
-		    int n = sc.nextInt();
-		    int[] arr=new int[n];
-		    for(int i=0;i<n;i++){
-		        arr[i]=sc.nextInt();
-		    }
-		    int[] dp = new int[arr.length];
-    		int max = Integer.MIN_VALUE;
-    		Arrays.fill(dp, 1);
-    		for (int i = 0; i < arr.length; i++) {
-    		    if(arr[i]<0){
-    		        dp[i]=0;
-    		        continue;
-    		    }
-    			for (int j = 0; j < i; j++) {
-    				if(arr[i]>arr[j]) {
-    					dp[i] = Math.max(dp[i], dp[j]+1);	
-    				}
-    			}
-    			max=Math.max(dp[i],max);
-    		}
-    		System.out.println(max);
-		    t--;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		int[] arr = { 19, 2, 3, 1, 4, 8, 10 };
+		int[] lis = new int[arr.length];
+		// Every element is an increasing subsequence of length 1
+		for (int i = 0; i < arr.length; i++) {
+			lis[i] = 1;
 		}
+		int max_len = lis[0];
+		lis[0] = 1;
+		for (int i = 0; i < arr.length; i++) {
+			lis[i] = 1;
+			for (int j = 1; j < arr.length; j++) {
+				if (arr[i] > arr[j] && lis[i] < lis[j] + 1) {
+					lis[i] = lis[j] + 1;
+				}
+			}
+			max_len = Math.max(max_len, lis[i]);
+		}
+
+		int max = -1, max_index = -1;
+		for (int i = 0; i < lis.length; i++) {
+			if (max < lis[i]) {
+				max = lis[i];
+				max_index = i;
+			}
+		}
+		for (int i = max_index; i >= 0; i--) {
+			if (lis[i] == max) {
+				System.out.print(arr[i] + " ");
+				max--;
+			}
+		}
+
 	}
+
 }

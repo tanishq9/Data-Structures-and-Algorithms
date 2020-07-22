@@ -1,47 +1,51 @@
-/*package whatever //do not write package name here */
+package DynamicProgramming;
 
-import java.util.*;
-import java.lang.*;
-import java.io.*;
+public class editDistance {
 
-class GFG {
-	public static void main (String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int t = sc.nextInt();
-		while(t!=0){
-		    int m = sc.nextInt();
-		    int n = sc.nextInt();
-		    String str1 = sc.next();
-		    String str2 = sc.next();
-            System.out.println(edit(str1,str2));
-		    t--;
-		}
+	public static void main(String[] args) {
+		String str1 = "abcd";
+		String str2 = "adc";
+		System.out.println(editDistance(str1, str2));
 	}
 
-    private static int edit(String str1, String str2) {
-		int[][] table = new int[str1.length() + 1][str2.length() + 1];
-		// Meaning of cell : Minimum number of operations required to convert
-		// input string[0,i] to output string[0,j]
-		for (int i = 0; i < table.length; i++) {
-			for (int j = 0; j < table[0].length; j++) {
-				if (i == 0) {
-					table[i][j] = j;
-				} else if (j == 0) {
-					table[i][j] = i;
+	private static int editDistance(String str1, String str2) {
+		if (str1.length() == 0) {
+			return str2.length();
+		}
+		if (str2.length() == 0) {
+			return str1.length();
+		}
+		if (str1.charAt(0) == str2.charAt(0)) {
+			return editDistance(str1.substring(1), str2.substring(1));
+		}
+		int replace = 1 + editDistance(str1.substring(1), str2.substring(1));
+		int remove = 1 + editDistance(str1.substring(1), str2);
+		int add = 1 + editDistance(str1, str2.substring(1));
+		return Math.min(Math.min(replace, remove), add);
+	}
+
+	private static int bottomUp(String str1, String str2) {
+		int[][] dp = new int[str1.length() + 1][str2.length() + 1];
+		int m = str1.length();
+		int n = str2.length();
+		dp[0][0] = 0;
+		// Filling the dp table as discussed in the approach
+		for (int i = 1; i <= n; i++) {
+			dp[0][i] = dp[0][i - 1] + 1;// insertion
+		}
+		for (int i = 1; i <= m; i++) {
+			dp[0][i] = dp[0][i - 1] + 1; // deletion
+		}
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				if (str1.charAt(i - 1) != str2.charAt(j - 1)) {
+					dp[i][j] = 1 + Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]);
 				} else {
-					if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
-						table[i][j] = table[i - 1][j - 1];
-					} else {
-						int insertion = 1 + table[i - 1][j];
-						int remove = 1 + table[i - 1][j - 1];
-						int replace = 1 + table[i][j - 1];
-						table[i][j] = Math.min(Math.min(insertion, replace), remove);
-					}
+					dp[i][j] = dp[i - 1][j - 1];// No operation
 				}
 			}
 		}
-
-		return table[str1.length()][str2.length()];
+		return dp[str1.length()][str2.length()];
 	}
-	
+
 }

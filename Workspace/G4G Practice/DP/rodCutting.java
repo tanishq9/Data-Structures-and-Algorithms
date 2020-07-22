@@ -1,54 +1,29 @@
-package DP_Pep;
+package DynamicProgramming;
 
-public class rodCuttting {
+public class RodCutting {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int[] price = { 0, 3, 5, 6, 15, 10, 25, 12, 24 };
-		// System.out.println(numWays(0, price.length));
-		System.out.println(rodCutting(price, price.length, new int[price.length + 1]));
-		System.out.println(bottomUp(price));
-
+		int[] arr = { 0, 3, 5, 6, 15, 10, 25, 12, 24 };
+			// Cost of single piece, cost of 2 piece together,cost of 3 piece together,.. 4
+		// pieces,...5 pieces
+		int[] memo = new int[arr.length + 1];
+		System.out.println(maxProfit(arr, arr.length, memo));
 	}
 
-	private static int rodCutting(int[] price, int remainingLength, int[] dp) {
-		// dp[i] denotes the maximum profit that I can get by selling ith length piece
-		if (remainingLength == 0) {
+	private static int maxProfit(int[] cost, int len, int[] memo) {
+		if (len == 0) {
 			return 0;
 		}
-		if (dp[remainingLength] != 0) {
-			return dp[remainingLength];
+		if (memo[len] != 0) {
+			return memo[len];
 		}
-		int cost = Integer.MIN_VALUE;
-		for (int i = 1; i <= price.length; i++) {
-			// Always apply the check for negative values otherwise you will have to cover
-			// for this case also as a separate base case therefore always do the negative
-			// check
-			if ((remainingLength - i) >= 0) {
-				cost = Math.max(cost, price[i - 1] + rodCutting(price, remainingLength - i, dp));
+		int ans = Integer.MIN_VALUE;
+		for (int i = 1; i <= cost.length; i++) {
+			if ((len - i) >= 0) {
+				int result = cost[i - 1] + maxProfit(cost, len - i, memo);
+				ans = Math.max(ans, result);
 			}
 		}
-		return dp[remainingLength] = cost;
-	}
-
-	private static int bottomUp(int[] price) {
-		int[] dp = new int[price.length + 1];
-		// Meaning of cell : each cell tells the maximum profit that we get
-		// in selling that ith length i.e dp[i]
-		dp[0] = 0;
-		for (int i = 1; i <= price.length; i++) {
-			dp[i] = price[i - 1];
-		}
-		for (int i = 1; i <= price.length; i++) {
-			for (int j = 1; j <= i; j++) {
-				dp[i] = Math.max(dp[j] + dp[i - j], dp[i]);
-			}
-		}
-		for (int i = 0; i < dp.length; i++) {
-			System.out.print(dp[i] + " ");
-		}
-		System.out.println();
-		return dp[price.length];
+		return memo[len] = ans;
 	}
 }
-
