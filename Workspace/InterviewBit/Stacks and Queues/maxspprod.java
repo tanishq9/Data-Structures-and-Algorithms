@@ -27,7 +27,8 @@ public class Solution {
         // System.out.println(Arrays.toString(leftLarger));
         // System.out.println(Arrays.toString(rightLarger));
         for(int i=0;i<n;i++){
-            max=Long.max(max,(long)leftLarger[i]*(long)rightLarger[i]);
+	// max=Long.max(max,(long)leftLarger[i]*(long)rightLarger[i]);            
+	   max=Long.max(max,1L*leftLarger[i]*rightLarger[i]);
         }
         return (int)(max%1000000007);
     }
