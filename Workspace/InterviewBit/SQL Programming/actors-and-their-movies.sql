@@ -1,12 +1,12 @@
-select distinct m.movie_title
-from movies as m, movies_cast as mc -- join movies and movies_cast table on common column i.e movie_id
+select distinct m.movie_title 
+from movies as m,movies_cast as mc -- join movies and movies_cast table on common column i.e movie_id
 where m.movie_id=mc.movie_id and
-      mc.actor_id in  -- check if any actor of any particular actor has acted in 2 or more movies
-      ( select a.actor_id from movies_cast as mc,actors as a 
-        where a.actor_id=mc.actor_id
-        group by a.actor_id
-        having count(*)>=2
-      )
+    mc.actor_id in
+    ( select mc.actor_id
+      from movies_cast as mc
+      group by mc.actor_id
+      having count(*)>=2 in  -- check if any actor of any particular actor has acted in 2 or more movies
+    )
 -- example table after natural join
 -- movie_id actor_id movie_name
 --    m1       a1      "abc"
